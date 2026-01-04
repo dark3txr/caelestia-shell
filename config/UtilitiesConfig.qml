@@ -7,6 +7,7 @@ JsonObject {
     property Sizes sizes: Sizes {}
     property Toasts toasts: Toasts {}
     property Vpn vpn: Vpn {}
+    property NightLight nightLight: NightLight {}
 
     component Sizes: JsonObject {
         property int width: 430
@@ -26,10 +27,16 @@ JsonObject {
         property bool kbLimit: true
         property bool vpnChanged: true
         property bool nowPlaying: true
+        property bool nightLight: true
     }
 
     component Vpn: JsonObject {
         property bool enabled: true
         property list<var> provider: ["protonvpn"]
+    }
+
+    component NightLight: JsonObject {
+        property bool enabled: false
+        property int temperature: 4500
     }
 }
