@@ -16,27 +16,20 @@ Row {
     property real verticalPadding: Appearance.padding.smaller
     property int type: SplitButton.Filled
     property bool disabled
-    property bool menuOnTop
-    property string fallbackIcon
-    property string fallbackText
-
     property alias menuItems: menu.items
     property alias active: menu.active
     property alias expanded: menu.expanded
     property alias menu: menu
-    property alias iconLabel: iconLabel
-    property alias label: label
-    property alias stateLayer: stateLayer
 
     property color colour: type == SplitButton.Filled ? Colours.palette.m3primary : Colours.palette.m3secondaryContainer
     property color textColour: type == SplitButton.Filled ? Colours.palette.m3onPrimary : Colours.palette.m3onSecondaryContainer
-    property color disabledColour: Qt.alpha(Colours.palette.m3onSurface, 0.1)
-    property color disabledTextColour: Qt.alpha(Colours.palette.m3onSurface, 0.38)
+    readonly property color disabledColour: Qt.alpha(Colours.palette.m3onSurface, 0.1)
+    readonly property color disabledTextColour: Qt.alpha(Colours.palette.m3onSurface, 0.38)
 
     spacing: Math.floor(Appearance.spacing.small / 2)
 
     StyledRect {
-        radius: implicitHeight / 2 * Math.min(1, Appearance.rounding.scale)
+        radius: implicitHeight / 2
         topRightRadius: Appearance.rounding.small / 2
         bottomRightRadius: Appearance.rounding.small / 2
         color: root.disabled ? root.disabledColour : root.colour
@@ -69,7 +62,7 @@ Row {
 
                 Layout.alignment: Qt.AlignVCenter
                 animate: true
-                text: root.active?.activeIcon ?? root.fallbackIcon
+                text: root.active?.activeIcon ?? ""
                 color: root.disabled ? root.disabledTextColour : root.textColour
                 fill: 1
             }
@@ -80,7 +73,7 @@ Row {
                 Layout.alignment: Qt.AlignVCenter
                 Layout.preferredWidth: implicitWidth
                 animate: true
-                text: root.active?.activeText ?? root.fallbackText
+                text: root.active?.activeText ?? ""
                 color: root.disabled ? root.disabledTextColour : root.textColour
                 clip: true
 
@@ -96,9 +89,9 @@ Row {
     StyledRect {
         id: expandBtn
 
-        property real rad: root.expanded ? implicitHeight / 2 * Math.min(1, Appearance.rounding.scale) : Appearance.rounding.small / 2
+        property real rad: root.expanded ? implicitHeight / 2 : Appearance.rounding.small / 2
 
-        radius: implicitHeight / 2 * Math.min(1, Appearance.rounding.scale)
+        radius: implicitHeight / 2
         topLeftRadius: rad
         bottomLeftRadius: rad
         color: root.disabled ? root.disabledColour : root.colour
@@ -145,20 +138,9 @@ Row {
         Menu {
             id: menu
 
-            states: State {
-                when: root.menuOnTop
-
-                AnchorChanges {
-                    target: menu
-                    anchors.top: undefined
-                    anchors.bottom: expandBtn.top
-                }
-            }
-
             anchors.top: parent.bottom
             anchors.right: parent.right
             anchors.topMargin: Appearance.spacing.small
-            anchors.bottomMargin: Appearance.spacing.small
         }
     }
 }

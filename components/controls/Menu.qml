@@ -19,7 +19,7 @@ Elevation {
     radius: Appearance.rounding.small / 2
     level: 2
 
-    implicitWidth: Math.max(200, column.implicitWidth)
+    implicitWidth: column.implicitWidth
     implicitHeight: root.expanded ? column.implicitHeight : 0
     opacity: root.expanded ? 1 : 0
 
@@ -31,8 +31,6 @@ Elevation {
         ColumnLayout {
             id: column
 
-            anchors.left: parent.left
-            anchors.right: parent.right
             spacing: 0
 
             Repeater {
