@@ -6,14 +6,14 @@ JsonObject {
     property Visualiser visualiser: Visualiser {}
 
     component DesktopClock: JsonObject {
-        property bool enabled: false
+        property bool enabled: true
     }
 
     component Visualiser: JsonObject {
-        property bool enabled: false
-        property bool autoHide: true
+        property bool enabled: true
+        property bool autoHide: false
         property bool blur: false
-        property real rounding: 1
-        property real spacing: 1
+        property real rounding: 0.5
+        property real spacing: 0.8
     }
 }

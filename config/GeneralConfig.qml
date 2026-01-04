@@ -17,16 +17,16 @@ JsonObject {
         property bool inhibitWhenAudio: true
         property list<var> timeouts: [
             {
-                timeout: 180,
+                timeout: 300,
                 idleAction: "lock"
             },
             {
-                timeout: 300,
+                timeout: 420,
                 idleAction: "dpms off",
                 returnAction: "dpms on"
             },
             {
-                timeout: 600,
+                timeout: 1200,
                 idleAction: ["systemctl", "suspend-then-hibernate"]
             }
         ]
@@ -36,20 +36,20 @@ JsonObject {
         property list<var> warnLevels: [
             {
                 level: 20,
-                title: qsTr("Low battery"),
-                message: qsTr("You might want to plug in a charger"),
+                title: qsTr("Low battery level"),
+                message: qsTr("Battery level is at 20%"),
                 icon: "battery_android_frame_2"
             },
             {
                 level: 10,
-                title: qsTr("Did you see the previous message?"),
-                message: qsTr("You should probably plug in a charger <b>now</b>"),
+                title: qsTr("Very low battery level"),
+                message: qsTr("Battery level is at 10%"),
                 icon: "battery_android_frame_1"
             },
             {
                 level: 5,
                 title: qsTr("Critical battery level"),
-                message: qsTr("PLUG THE CHARGER RIGHT NOW!!"),
+                message: qsTr("Battery level at 5%"),
                 icon: "battery_android_alert",
                 critical: true
             },

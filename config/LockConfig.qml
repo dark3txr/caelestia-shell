@@ -2,8 +2,9 @@ import Quickshell.Io
 
 JsonObject {
     property bool recolourLogo: false
-    property bool enableFprint: true
+    property bool enableFprint: false
     property int maxFprintTries: 3
+    property bool enableHowdy: false // Buggy and experimental
     property Sizes sizes: Sizes {}
 
     component Sizes: JsonObject {

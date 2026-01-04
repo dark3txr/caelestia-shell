@@ -5,9 +5,9 @@ JsonObject {
     property bool showOnHover: false
     property int maxShown: 7
     property int maxWallpapers: 9 // Warning: even numbers look bad
-    property string specialPrefix: "@"
+    property string specialPrefix: "!"
     property string actionPrefix: ">"
-    property bool enableDangerousActions: false // Allow actions that can cause losing data, like shutdown, reboot and logout
+    property bool enableDangerousActions: true // Allow actions that can cause losing data, like shutdown, reboot and logout
     property int dragThreshold: 50
     property bool vimKeybinds: false
     property list<string> hiddenApps: []
@@ -33,8 +33,24 @@ JsonObject {
         {
             name: "Calculator",
             icon: "calculate",
-            description: "Do simple math equations (powered by Qalc)",
+            description: "Do simple maths equations",
             command: ["autocomplete", "calc"],
+            enabled: true,
+            dangerous: false
+        },
+        {
+            name: "Python",
+            icon: "code",
+            description: "Execute Python one-liners",
+            command: ["autocomplete", "python"],
+            enabled: true,
+            dangerous: false
+        },
+        {
+            name: "Python",
+            icon: "code",
+            description: "Execute Python one-liners",
+            command: ["autocomplete", "python"],
             enabled: true,
             dangerous: false
         },
@@ -57,7 +73,7 @@ JsonObject {
         {
             name: "Variant",
             icon: "colors",
-            description: "Change the current scheme variant",
+            description: "Change the current colour scheme variant",
             command: ["autocomplete", "variant"],
             enabled: true,
             dangerous: false

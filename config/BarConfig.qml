@@ -12,7 +12,6 @@ JsonObject {
     property Status status: Status {}
     property Clock clock: Clock {}
     property Sizes sizes: Sizes {}
-    property list<string> excludedScreens: []
 
     property list<var> entries: [
         {
@@ -55,8 +54,8 @@ JsonObject {
 
     component ScrollActions: JsonObject {
         property bool workspaces: true
-        property bool volume: true
-        property bool brightness: true
+        property bool volume: false
+        property bool brightness: false
     }
 
     component Popouts: JsonObject {
@@ -68,13 +67,13 @@ JsonObject {
     component Workspaces: JsonObject {
         property int shown: 5
         property bool activeIndicator: true
-        property bool occupiedBg: false
+        property bool occupiedBg: true
         property bool showWindows: true
         property bool showWindowsOnSpecialWorkspaces: showWindows
-        property bool activeTrail: false
+        property bool activeTrail: true
         property bool perMonitorWorkspaces: true
-        property string label: "  " // if empty, will show workspace name's first letter
-        property string occupiedLabel: "󰮯"
+        property string label: ""
+        property string occupiedLabel: ""
         property string activeLabel: "󰮯"
         property string capitalisation: "preserve" // upper, lower, or preserve - relevant only if label is empty
         property list<var> specialWorkspaceIcons: []
@@ -85,31 +84,33 @@ JsonObject {
     }
 
     component Tray: JsonObject {
-        property bool background: false
+        property bool background: true
         property bool recolour: false
-        property bool compact: false
+        property bool compact: true
         property list<var> iconSubs: []
     }
 
     component Status: JsonObject {
-        property bool showAudio: false
-        property bool showMicrophone: false
+        property bool showAudio: true
+        property bool showMicrophone: true
         property bool showKbLayout: false
         property bool showNetwork: true
         property bool showBluetooth: true
         property bool showBattery: true
-        property bool showLockStatus: true
+        property bool showLockStatus: false
     }
 
     component Clock: JsonObject {
         property bool showIcon: true
+        property bool showCalendar: true
+        property string calendarStyle: "simple"
     }
 
     component Sizes: JsonObject {
         property int innerWidth: 40
         property int windowPreviewSize: 400
         property int trayMenuWidth: 300
-        property int batteryWidth: 250
+        property int batteryWidth: 270
         property int networkWidth: 320
     }
 }
