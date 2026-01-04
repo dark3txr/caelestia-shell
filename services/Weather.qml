@@ -37,11 +37,11 @@ Singleton {
                 fetchCoordsFromCity(configLocation);
             }
         } else if (!loc || timer.elapsed() > 900) {
-            Requests.get("https://ipinfo.io/json", text => {
+            Requests.get("https://apip.cc/json", text => {
                 const response = JSON.parse(text);
-                if (response.loc) {
-                    loc = response.loc;
-                    city = response.city ?? "";
+                if (response.Latitude !== undefined && response.Longitude !== undefined) {
+                    loc = response.Latitude + "," + response.Longitude;
+                    city = response.City ?? "";
                     timer.restart();
                 }
             });
