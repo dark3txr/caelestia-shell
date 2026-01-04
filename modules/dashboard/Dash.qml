@@ -22,8 +22,6 @@ GridLayout {
         Layout.preferredWidth: user.implicitWidth
         Layout.preferredHeight: user.implicitHeight
 
-        radius: Appearance.rounding.large
-
         User {
             id: user
 
@@ -39,8 +37,6 @@ GridLayout {
         Layout.preferredWidth: Config.dashboard.sizes.weatherWidth
         Layout.fillHeight: true
 
-        radius: Appearance.rounding.large * 1.5
-
         Weather {}
     }
 
@@ -48,8 +44,6 @@ GridLayout {
         Layout.row: 1
         Layout.preferredWidth: dateTime.implicitWidth
         Layout.fillHeight: true
-
-        radius: Appearance.rounding.normal
 
         DateTime {
             id: dateTime
@@ -62,8 +56,6 @@ GridLayout {
         Layout.columnSpan: 3
         Layout.fillWidth: true
         Layout.preferredHeight: calendar.implicitHeight
-
-        radius: Appearance.rounding.large
 
         Calendar {
             id: calendar
@@ -78,8 +70,6 @@ GridLayout {
         Layout.preferredWidth: resources.implicitWidth
         Layout.fillHeight: true
 
-        radius: Appearance.rounding.normal
-
         Resources {
             id: resources
         }
@@ -92,14 +82,13 @@ GridLayout {
         Layout.preferredWidth: media.implicitWidth
         Layout.fillHeight: true
 
-        radius: Appearance.rounding.large * 2
-
         Media {
             id: media
         }
     }
 
     component Rect: StyledRect {
+        radius: Appearance.rounding.small
         color: Colours.tPalette.m3surfaceContainer
     }
 }
