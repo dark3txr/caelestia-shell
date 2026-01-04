@@ -72,6 +72,10 @@ ColumnLayout {
             popouts.currentName = id.toLowerCase();
             popouts.currentCenter = item.mapToItem(root, 0, itemHeight / 2).y;
             popouts.hasCurrent = true;
+        } else if (id === "clock" && Config.bar.clock.showCalendar) {
+            popouts.currentName = "calendar";
+            popouts.currentCenter = Qt.binding(() => item.mapToItem(root, 0, itemHeight / 2).y);
+            popouts.hasCurrent = true;
         }
     }
 
@@ -195,7 +199,7 @@ ColumnLayout {
 
         Layout.alignment: Qt.AlignHCenter
 
-        // Cursed ahh thing to add padding to first and last enabled components
+        // Add padding to first and last enabled components
         Layout.topMargin: findFirstEnabled() === this ? root.vPadding : 0
         Layout.bottomMargin: findLastEnabled() === this ? root.vPadding : 0
 

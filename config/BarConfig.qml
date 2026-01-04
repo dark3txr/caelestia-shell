@@ -103,7 +103,6 @@ JsonObject {
     component Clock: JsonObject {
         property bool showIcon: true
         property bool showCalendar: true
-        property string calendarStyle: "simple"
     }
 
     component Sizes: JsonObject {
