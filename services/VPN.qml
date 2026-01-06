@@ -60,6 +60,12 @@ Singleton {
                 disconnectCmd: ["tailscale", "down"],
                 interface: "tailscale0",
                 displayName: "Tailscale"
+            },
+            "protonvpn": {
+                connectCmd: ["protonvpn", "connect"],
+                disconnectCmd: ["protonvpn", "disconnect"],
+                interface: "proton0",
+                displayName: "ProtonVPN"
             }
         };
 
