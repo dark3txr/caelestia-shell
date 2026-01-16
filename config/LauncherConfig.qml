@@ -149,6 +149,14 @@ JsonObject {
             command: ["systemctl", "suspend-then-hibernate"],
             enabled: true,
             dangerous: false
-        }
+        },
+        {
+            name: "Settings",
+            icon: "settings",
+            description: "Open the settings",
+            command: ["caelestia", "shell", "controlCenter", "open"],
+            enabled: true,
+            dangerous: false
+        }   
     ]
 }
