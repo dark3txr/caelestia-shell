@@ -157,6 +157,6 @@ JsonObject {
             command: ["caelestia", "shell", "controlCenter", "open"],
             enabled: true,
             dangerous: false
-        }   
+        }
     ]
 }
