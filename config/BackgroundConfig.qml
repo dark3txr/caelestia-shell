@@ -7,9 +7,7 @@ JsonObject {
 
     component DesktopClock: JsonObject {
         property bool enabled: true
-
-        property bool enabled: false
-        property real scale: 1.0
+        property real scale: 1
         property string position: "bottom-right"
         property bool invertColors: false
         property DesktopClockBackground background: DesktopClockBackground {}
@@ -18,12 +16,12 @@ JsonObject {
 
     component DesktopClockBackground: JsonObject {
         property bool enabled: false
-        property real opacity: 0.7
+        property real opacity: 0.36
         property bool blur: true
     }
 
     component DesktopClockShadow: JsonObject {
-        property bool enabled: true
+        property bool enabled: false
         property real opacity: 0.7
         property real blur: 0.4
     }
