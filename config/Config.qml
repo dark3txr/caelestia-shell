@@ -253,6 +253,7 @@ Singleton {
                 showMemory: dashboard.performance.showMemory,
                 showStorage: dashboard.performance.showStorage,
                 showNetwork: dashboard.performance.showNetwork,
+                updateInterval: dashboard.performance.updateInterval,
                 usageTextSize: dashboard.performance.usageTextSize,
                 valueLabelSize: dashboard.performance.valueLabelSize,
                 percentageTextSize: dashboard.performance.percentageTextSize,
@@ -262,8 +263,6 @@ Singleton {
                 tempBarWidthMult: dashboard.performance.tempBarWidthMult,
                 gaugeLineWidth: dashboard.performance.gaugeLineWidth,
                 gaugeRadiusOffset: dashboard.performance.gaugeRadiusOffset,
-                diskIndicatorWidth: dashboard.performance.diskIndicatorWidth,
-                diskIndicatorRadius: dashboard.performance.diskIndicatorRadius,
                 heroCardTopMargin: dashboard.performance.heroCardTopMargin,
                 heroCardBottomMargin: dashboard.performance.heroCardBottomMargin,
                 heroCardLeftMargin: dashboard.performance.heroCardLeftMargin,
@@ -272,12 +271,7 @@ Singleton {
                 batteryTankMargin: dashboard.performance.batteryTankMargin,
                 mainValueSpacing: dashboard.performance.mainValueSpacing,
                 percentValueSpacing: dashboard.performance.percentValueSpacing,
-                gaugeCardMargin: dashboard.performance.gaugeCardMargin,
-                storageCardMargin: dashboard.performance.storageCardMargin,
-                diskRowTopMargin: dashboard.performance.diskRowTopMargin,
-                diskRowBottomMargin: dashboard.performance.diskRowBottomMargin,
-                diskRowProgressTopMargin: dashboard.performance.diskRowProgressTopMargin,
-                diskRowProgressBottomMargin: dashboard.performance.diskRowProgressBottomMargin
+                gaugeCardMargin: dashboard.performance.gaugeCardMargin
             },
             sizes: {
                 tabIndicatorHeight: dashboard.sizes.tabIndicatorHeight,
