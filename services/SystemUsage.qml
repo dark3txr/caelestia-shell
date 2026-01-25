@@ -144,7 +144,18 @@ Singleton {
         id: gpuTypeCheck
 
         running: !Config.services.gpuType
-        command: ["sh", "-c", "if command -v nvidia-smi &>/dev/null && nvidia-smi -L &>/dev/null; then echo NVIDIA; elif ls /sys/class/drm/card*/device/gpu_busy_percent 2>/dev/null | grep -q .; then echo GENERIC; else echo NONE; fi"]
+        command: ["sh", "-c",
+            "profile=$(powerprofilesctl get 2>/dev/null || echo balanced); " +
+            "if [ \"$profile\" = performance ]; then " +
+                "if command -v nvidia-smi >/dev/null 2>&1 && nvidia-smi -L >/dev/null 2>&1; then echo NVIDIA; " +
+                "elif ls /sys/class/drm/card*/device/gpu_busy_percent 2>/dev/null | grep -q .; then echo GENERIC; " +
+                "else echo NONE; fi; " +
+            "else " +
+                "if ls /sys/class/drm/card*/device/gpu_busy_percent 2>/dev/null | grep -q .; then echo GENERIC; " +
+                "elif command -v nvidia-smi >/dev/null 2>&1; then echo NVIDIA; " +
+                "else echo NONE; fi; " +
+            "fi"
+        ]
         stdout: StdioCollector {
             onStreamFinished: root.autoGpuType = text.trim()
         }

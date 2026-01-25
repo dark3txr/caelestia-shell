@@ -32,7 +32,7 @@ RowLayout {
         label1: root.displayTemp(SystemUsage.gpuTemp)
         label2: `${Math.round(SystemUsage.gpuPerc * 100)}%`
 
-        sublabel1: qsTr("GPU temp")
+        sublabel1: (SystemUsage.autoGpuType === "NVIDIA" ? qsTr("dGPU Temp.") : qsTr("iGPU Temp."))
         sublabel2: qsTr("Usage")
     }
 
@@ -49,7 +49,7 @@ RowLayout {
         label1: root.displayTemp(SystemUsage.cpuTemp)
         label2: `${Math.round(SystemUsage.cpuPerc * 100)}%`
 
-        sublabel1: qsTr("CPU temp")
+        sublabel1: qsTr("CPU Temp.")
         sublabel2: qsTr("Usage")
     }
 
