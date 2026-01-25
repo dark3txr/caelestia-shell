@@ -2,8 +2,8 @@ import Quickshell.Io
 
 JsonObject {
     property bool enabled: true
-    property bool showOnHover: false
-    property int updateInterval: 500
+    property bool showOnHover: true
+    property int updateInterval: 1000
     property int dragThreshold: 50
     property Sizes sizes
     property Performance performance
