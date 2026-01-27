@@ -46,6 +46,7 @@ Singleton {
 
     function cleanCpuName(name: string): string {
         return name
+            .replace(/\s*w\/.*$/i, "")
             .replace(/\(R\)/gi, "")
             .replace(/\(TM\)/gi, "")
             .replace(/CPU/gi, "")
@@ -56,12 +57,12 @@ Singleton {
             .replace(/Core /gi, "")
             .replace(/Processor/gi, "")
             .replace(/\s+/g, " ")
-            .replace(/ w\/.*$/, "")
             .trim();
     }
 
     function cleanGpuName(name: string): string {
         return name
+            .replace(/[^\/\s]+\s*\/\s*([^\s\]]+)$/, "$1")
             .replace(/NVIDIA GeForce /gi, "")
             .replace(/NVIDIA /gi, "")
             .replace(/AMD Radeon /gi, "")
@@ -256,11 +257,14 @@ Singleton {
         command: ["sh", "-c",
             "profile=$(powerprofilesctl get 2>/dev/null || echo balanced); " +
             "if [ \"$profile\" = performance ]; then " +
-                "command -v nvidia-smi >/dev/null 2>&1 && nvidia-smi -L >/dev/null 2>&1 && nvidia-smi --query-gpu=name --format=csv,noheader 2>/dev/null || " +
-                "lspci 2>/dev/null | grep -Ei 'vga|3d|display' | grep -vi nvidia | head -1; " +
+                "if command -v nvidia-smi >/dev/null 2>&1 && nvidia-smi -L >/dev/null 2>&1; then " +
+                    "nvidia-smi --query-gpu=name --format=csv,noheader; " +
+                "else " +
+                    "lspci 2>/dev/null | grep -i 'vga\\|3d\\|display' | head -1; " +
+                "fi; " +
             "else " +
-                "lspci 2>/dev/null | grep -Ei 'vga|3d|display' | grep -vi nvidia | head -1 || " +
-                "command -v nvidia-smi >/dev/null 2>&1 && nvidia-smi -L >/dev/null 2>&1 && nvidia-smi --query-gpu=name --format=csv,noheader 2>/dev/null; " +
+                "lspci 2>/dev/null | grep -i 'vga\\|3d\\|display' | grep -vi 'nvidia' | sed 's/^[^:]*: *[^:]*: *//' | head -1 || " +
+                "nvidia-smi --query-gpu=name --format=csv,noheader; " +
             "fi"
         ]
         stdout: StdioCollector {
@@ -277,7 +281,9 @@ Singleton {
                     const bracketMatches = output.match(/\[([^\]]+)\]/g);
                     if (bracketMatches) {
                         root.gpuName = root.cleanGpuName(
-                            bracketMatches.map(b => b.slice(1, -1)).join(" ")
+                            bracketMatches
+                                .map(b => b.slice(1, -1))
+                                .join(" ")
                         );
                     } else {
                         const colonMatch = output.match(/:\s*(.+)/);
