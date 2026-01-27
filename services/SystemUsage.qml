@@ -56,6 +56,7 @@ Singleton {
             .replace(/Core /gi, "")
             .replace(/Processor/gi, "")
             .replace(/\s+/g, " ")
+            .replace(/ w\/.*$/, "")
             .trim();
     }
 
@@ -252,7 +253,16 @@ Singleton {
         id: gpuNameDetect
 
         running: true
-        command: ["sh", "-c", "nvidia-smi --query-gpu=name --format=csv,noheader 2>/dev/null || lspci 2>/dev/null | grep -i 'vga\\|3d\\|display' | head -1"]
+        command: ["sh", "-c",
+            "profile=$(powerprofilesctl get 2>/dev/null || echo balanced); " +
+            "if [ \"$profile\" = performance ]; then " +
+                "command -v nvidia-smi >/dev/null 2>&1 && nvidia-smi -L >/dev/null 2>&1 && nvidia-smi --query-gpu=name --format=csv,noheader 2>/dev/null || " +
+                "lspci 2>/dev/null | grep -Ei 'vga|3d|display' | grep -vi nvidia | head -1; " +
+            "else " +
+                "lspci 2>/dev/null | grep -Ei 'vga|3d|display' | grep -vi nvidia | head -1 || " +
+                "command -v nvidia-smi >/dev/null 2>&1 && nvidia-smi -L >/dev/null 2>&1 && nvidia-smi --query-gpu=name --format=csv,noheader 2>/dev/null; " +
+            "fi"
+        ]
         stdout: StdioCollector {
             onStreamFinished: {
                 const output = text.trim();
@@ -264,9 +274,11 @@ Singleton {
                     root.gpuName = root.cleanGpuName(output);
                 } else {
                     // Parse lspci output: extract name from brackets or after colon
-                    const bracketMatch = output.match(/\[([^\]]+)\]/);
-                    if (bracketMatch) {
-                        root.gpuName = root.cleanGpuName(bracketMatch[1]);
+                    const bracketMatches = output.match(/\[([^\]]+)\]/g);
+                    if (bracketMatches) {
+                        root.gpuName = root.cleanGpuName(
+                            bracketMatches.map(b => b.slice(1, -1)).join(" ")
+                        );
                     } else {
                         const colonMatch = output.match(/:\s*(.+)/);
                         if (colonMatch)
