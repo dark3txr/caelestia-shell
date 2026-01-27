@@ -36,7 +36,7 @@ JsonObject {
     }
 
     component NightLight: JsonObject {
-        property bool enabled: false
+        property bool enabled: true
         property int temperature: 4500
     }
 }
