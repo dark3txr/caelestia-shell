@@ -12,7 +12,6 @@ import QtQuick.Layouts
 
 ColumnLayout {
     id: root
-
     spacing: 0
     width: 320
 
@@ -38,11 +37,12 @@ ColumnLayout {
 
     ColumnLayout {
         id: calendarGrid
-        anchors.fill: parent
-        anchors.topMargin: Appearance.padding.small
-        anchors.bottomMargin: Appearance.padding.normal
-        anchors.rightMargin: Appearance.padding.small
-
+        Layout.fillWidth: true
+        Layout.fillHeight: true
+        Layout.topMargin: Appearance.padding.normal
+        Layout.bottomMargin: Appearance.padding.small
+        Layout.leftMargin: 0
+        Layout.rightMargin: Appearance.padding.normal
         spacing: Appearance.spacing.small
 
         RowLayout {
@@ -50,8 +50,8 @@ ColumnLayout {
             Layout.bottomMargin: Appearance.spacing.small
 
             StyledRect {
-                implicitWidth: implicitHeight
                 implicitHeight: prevIcon.implicitHeight + Appearance.padding.small * 1.5
+                implicitWidth: implicitHeight
                 radius: Appearance.rounding.full
                 color: Colours.palette.m3primaryContainer
 
@@ -83,8 +83,8 @@ ColumnLayout {
             }
 
             StyledRect {
-                implicitWidth: implicitHeight
                 implicitHeight: nextIcon.implicitHeight + Appearance.padding.small * 1.5
+                implicitWidth: implicitHeight
                 radius: Appearance.rounding.full
                 color: Colours.palette.m3primaryContainer
 
@@ -137,7 +137,6 @@ ColumnLayout {
             delegate: Item {
                 id: dayItem
                 required property var model
-
                 width: root.cellWidth
                 height: root.cellHeight
 
@@ -167,3 +166,4 @@ ColumnLayout {
         }
     }
 }
+

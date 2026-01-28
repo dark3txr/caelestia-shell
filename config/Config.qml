@@ -230,7 +230,8 @@ Singleton {
                 showLockStatus: bar.status.showLockStatus
             },
             clock: {
-                showIcon: bar.clock.showIcon
+                showIcon: bar.clock.showIcon,
+                showSeconds: bar.clock.showSeconds
             },
             sizes: {
                 innerWidth: bar.sizes.innerWidth,
@@ -256,6 +257,7 @@ Singleton {
             showOnHover: dashboard.showOnHover,
             updateInterval: dashboard.updateInterval,
             dragThreshold: dashboard.dragThreshold,
+            showClockSeconds: dashboard.showClockSeconds,
             performance: {
                 showBattery: dashboard.performance.showBattery,
                 showGpu: dashboard.performance.showGpu,

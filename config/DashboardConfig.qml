@@ -5,6 +5,7 @@ JsonObject {
     property bool showOnHover: true
     property int updateInterval: 1000
     property int dragThreshold: 50
+    property bool showClockSeconds: true
     property Sizes sizes
     property Performance performance
 
