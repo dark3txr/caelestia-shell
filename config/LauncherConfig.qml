@@ -141,6 +141,14 @@ JsonObject {
             command: ["caelestia", "shell", "controlCenter", "open"],
             enabled: true,
             dangerous: false
+        },
+        {
+            name: "Search",
+            icon: "search",
+            description: "Search for files in your home",
+            command: ["autocomplete", "search"],
+            enabled: true,
+            dangerous: false
         }
     ]
 }

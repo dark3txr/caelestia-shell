@@ -89,6 +89,9 @@ Item {
                             Wallpapers.previewColourLock = true;
                         Wallpapers.setWallpaper(currentItem.modelData.path);
                         root.visibilities.launcher = false;
+                    } else if (list.showFileSearch) {
+                        FileSearch.openFile(currentItem.modelData);
+                        root.visibilities.launcher = false;
                     } else if (text.startsWith(Config.launcher.actionPrefix)) {
                         if (text.startsWith(`${Config.launcher.actionPrefix}calc `))
                             currentItem.onClicked();

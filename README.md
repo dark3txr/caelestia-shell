@@ -544,6 +544,14 @@ default, you must create it manually.
                 "command": ["caelestia", "shell", "controlCenter", "open"],
                 "enabled": true,
                 "dangerous": false
+            },
+            {
+                "name": "Search",
+                "icon": "search",
+                "description": "Search for files in your home",
+                "command": ["autocomplete", "search"],
+                "enable": true,
+                "dangerous": false
             }
         ],
         "dragThreshold": 50,
