@@ -52,7 +52,8 @@ RowLayout {
                 // Hide when GPU data is unavailable (gpuType === "NONE")
                 visible: Config.dashboard.performance.showGpu && SystemUsage.gpuType !== "NONE"
                 icon: "desktop_windows"
-                title: SystemUsage.gpuName ? `GPU - ${SystemUsage.gpuName}` : qsTr("GPU")
+                title: SystemUsage.gpuName ? `${SystemUsage.gpuType === "GENERIC" ? "iGPU" : "dGPU"} - ${SystemUsage.gpuName}` : qsTr("GPU")
+
                 mainValue: `${Math.round(SystemUsage.gpuPerc * 100)}%`
                 mainLabel: qsTr("Usage")
                 secondaryValue: root.displayTemp(SystemUsage.gpuTemp)

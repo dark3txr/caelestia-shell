@@ -115,6 +115,16 @@ Singleton {
         }
     }
 
+    Timer {
+        running: root.refCount > 0
+        repeat: false
+        triggeredOnStart: true
+        onTriggered: {
+            gpuNameDetect.running = true
+            gpuTypeCheck.running = true
+        }
+    }
+
     // One-time CPU info detection (name)
     FileView {
         id: cpuinfoInit
@@ -297,8 +307,7 @@ Singleton {
 
     Process {
         id: gpuTypeCheck
-
-        running: !Config.services.gpuType
+        running: !Config.services.gpuType 
         command: ["sh", "-c",
             "profile=$(powerprofilesctl get 2>/dev/null || echo balanced); " +
             "if [ \"$profile\" = performance ]; then " +
