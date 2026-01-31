@@ -8,6 +8,9 @@ import QtQuick
 Singleton {
     id: root
 
+    // Power Profile properties
+    property string powerProfile: ""
+
     // CPU properties
     property string cpuName: ""
     property real cpuPerc
@@ -117,11 +120,12 @@ Singleton {
 
     Timer {
         running: root.refCount > 0
-        repeat: false
+        repeat: true
+        interval: Config.dashboard.updateInterval * 10
         triggeredOnStart: true
+
         onTriggered: {
-            gpuNameDetect.running = true
-            gpuTypeCheck.running = true
+            powerProfileProcess.running = true
         }
     }
 
@@ -166,6 +170,27 @@ Singleton {
             const data = text();
             root.memTotal = parseInt(data.match(/MemTotal: *(\d+)/)[1], 10) || 1;
             root.memUsed = (root.memTotal - parseInt(data.match(/MemAvailable: *(\d+)/)[1], 10)) || 0;
+        }
+    }
+
+    Process {
+        id: powerProfileProcess
+        command: ["powerprofilesctl", "get"]
+        running: false
+        stdout: StdioCollector {
+            onStreamFinished: {
+                const profile = text.trim();
+                const isPerformance = (profile === "performance");
+
+                const oldPowerProfile = root.powerProfile;
+                root.powerProfile = profile;
+
+                const crossedBoundary = (oldPowerProfile !== profile);
+                if (oldPowerProfile === "" || crossedBoundary) {
+                    gpuNameDetect.running = true;
+                    gpuTypeCheck.running = true;
+                }
+            }
         }
     }
 
@@ -259,14 +284,13 @@ Singleton {
         }
     }
 
-    // GPU name detection (one-time)
+    // GPU name detection
     Process {
         id: gpuNameDetect
 
-        running: true
+        running: false
         command: ["sh", "-c",
-            "profile=$(powerprofilesctl get 2>/dev/null || echo balanced); " +
-            "if [ \"$profile\" = performance ]; then " +
+            "if [ \"$POWERPROFILE\" = \"performance\" ]; then " +
                 "if command -v nvidia-smi >/dev/null 2>&1 && nvidia-smi -L >/dev/null 2>&1; then " +
                     "nvidia-smi --query-gpu=name --format=csv,noheader; " +
                 "else " +
@@ -277,6 +301,7 @@ Singleton {
                 "nvidia-smi --query-gpu=name --format=csv,noheader; " +
             "fi"
         ]
+        environment: ({ POWERPROFILE: root.powerProfile })
         stdout: StdioCollector {
             onStreamFinished: {
                 const output = text.trim();
@@ -309,8 +334,7 @@ Singleton {
         id: gpuTypeCheck
         running: !Config.services.gpuType 
         command: ["sh", "-c",
-            "profile=$(powerprofilesctl get 2>/dev/null || echo balanced); " +
-            "if [ \"$profile\" = performance ]; then " +
+            "if [ \"$POWERPROFILE\" = \"performance\" ]; then " +
                 "if command -v nvidia-smi >/dev/null 2>&1 && nvidia-smi -L >/dev/null 2>&1; then echo NVIDIA; " +
                 "elif ls /sys/class/drm/card*/device/gpu_busy_percent 2>/dev/null | grep -q .; then echo GENERIC; " +
                 "else echo NONE; fi; " +
@@ -320,6 +344,7 @@ Singleton {
                 "else echo NONE; fi; " +
             "fi"
         ]
+        environment: ({ POWERPROFILE: root.powerProfile })
         stdout: StdioCollector {
             onStreamFinished: root.autoGpuType = text.trim()
         }
