@@ -202,7 +202,7 @@ Item {
     }
 
     AnimatedImage {
-        id: bongocat
+        id: music
 
         anchors.top: controls.bottom
         anchors.bottom: parent.bottom
