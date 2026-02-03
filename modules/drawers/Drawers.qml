@@ -4,7 +4,6 @@ import qs.components
 import qs.components.containers
 import qs.services
 import qs.config
-import qs.utils
 import qs.modules.bar
 import Quickshell
 import Quickshell.Wayland
@@ -19,7 +18,20 @@ Variants {
         id: scope
 
         required property ShellScreen modelData
-        readonly property bool barDisabled: Strings.testRegexList(Config.bar.excludedScreens, modelData.name)
+        readonly property bool barDisabled: {
+            const regexChecker = /^\^.*\$$/;
+            for (const filter of Config.bar.excludedScreens) {
+                // If filter is a regex
+                if (regexChecker.test(filter)) {
+                    if ((new RegExp(filter)).test(modelData.name))
+                        return true;
+                } else {
+                    if (filter === modelData.name)
+                        return true;
+                }
+            }
+            return false;
+        }
 
         Exclusions {
             screen: scope.modelData
