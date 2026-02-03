@@ -297,7 +297,7 @@ Singleton {
         return {
             enabled: launcher.enabled,
             showOnHover: launcher.showOnHover,
-            enableCategories: launcher.enableCategories ?? true,
+            enableCategories: launcher.enableCategories,
             maxShown: launcher.maxShown,
             maxWallpapers: launcher.maxWallpapers,
             specialPrefix: launcher.specialPrefix,
