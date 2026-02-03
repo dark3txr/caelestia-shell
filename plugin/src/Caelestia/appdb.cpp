@@ -309,4 +309,4 @@ void AppDb::updateApps() {
     }
 }
 
-} // namespace caelestia
+} // namespace caelestia // namespace caelestia
