@@ -113,4 +113,4 @@ private:
     void updateApps();
 };
 
-} // namespace caelestia
+} // namespace caelestia // namespace caelestia
