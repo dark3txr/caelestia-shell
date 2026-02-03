@@ -7,14 +7,67 @@ import qs.components.misc
 import qs.config
 import qs.services
 
-RowLayout {
+Item {
     id: root
 
     function displayTemp(temp: real) : string {
         return `${Math.ceil(Config.services.useFahrenheit ? temp * 1.8 + 32 : temp)}°${Config.services.useFahrenheit ? "F" : "C"}`;
     }
 
-    spacing: Appearance.spacing.normal
+    readonly property int minWidth: 400 + 400 + Appearance.spacing.normal + 120 + Appearance.padding.large * 2
+    readonly property bool upperRowVisible: Config.dashboard.performance.showCpu || (Config.dashboard.performance.showGpu && SystemUsage.gpuType !== "NONE")
+    readonly property int minHeight: upperRowVisible ? 400 : 220
+    implicitWidth: Math.max(minWidth, content.implicitWidth)
+    implicitHeight: Math.max(minHeight, placeholder.visible ? placeholder.height : content.implicitHeight)
+
+    StyledRect {
+        id: placeholder
+
+        anchors.centerIn: parent
+        width: 400
+        height: 350
+        radius: Appearance.rounding.large
+        color: Colours.tPalette.m3surfaceContainer
+        visible: !Config.dashboard.performance.showCpu &&
+                 !(Config.dashboard.performance.showGpu && SystemUsage.gpuType !== "NONE") &&
+                 !Config.dashboard.performance.showMemory &&
+                 !Config.dashboard.performance.showStorage &&
+                 !Config.dashboard.performance.showNetwork &&
+                 !(UPower.displayDevice.isLaptopBattery && Config.dashboard.performance.showBattery)
+
+        ColumnLayout {
+            anchors.centerIn: parent
+            spacing: Appearance.spacing.normal
+
+            MaterialIcon {
+                Layout.alignment: Qt.AlignHCenter
+                text: "tune"
+                font.pointSize: Appearance.font.size.extraLarge * 2
+                color: Colours.palette.m3onSurfaceVariant
+            }
+
+            StyledText {
+                Layout.alignment: Qt.AlignHCenter
+                text: qsTr("No widgets enabled")
+                font.pointSize: Appearance.font.size.large
+                color: Colours.palette.m3onSurface
+            }
+
+            StyledText {
+                Layout.alignment: Qt.AlignHCenter
+                text: qsTr("Enable widgets in dashboard settings")
+                font.pointSize: Appearance.font.size.small
+                color: Colours.palette.m3onSurfaceVariant
+            }
+        }
+    }
+
+    RowLayout {
+        id: content
+
+        anchors.fill: parent
+        spacing: Appearance.spacing.normal
+        visible: !placeholder.visible
 
     Ref {
         service: SystemUsage
@@ -28,6 +81,7 @@ RowLayout {
         RowLayout {
             Layout.fillWidth: true
             spacing: Appearance.spacing.normal
+            visible: Config.dashboard.performance.showCpu || (Config.dashboard.performance.showGpu && SystemUsage.gpuType !== "NONE")
 
             HeroCard {
                 Layout.fillWidth: true
@@ -49,7 +103,6 @@ RowLayout {
                 Layout.fillWidth: true
                 Layout.minimumWidth: 400
                 Layout.preferredHeight: 150
-                // Hide when GPU data is unavailable (gpuType === "NONE")
                 visible: Config.dashboard.performance.showGpu && SystemUsage.gpuType !== "NONE"
                 icon: "desktop_windows"
                 title: SystemUsage.gpuName ? `${SystemUsage.gpuType === "GENERIC" ? "iGPU" : "dGPU"} - ${SystemUsage.gpuName}` : qsTr("GPU")
@@ -106,7 +159,7 @@ RowLayout {
     BatteryTank {
         Layout.preferredWidth: 120
         Layout.fillHeight: true
-        Layout.minimumHeight: 350 // Match combined height + spacing roughly, or let it fill
+        Layout.minimumHeight: 350
         visible: UPower.displayDevice.isLaptopBattery && Config.dashboard.performance.showBattery
     }
 
@@ -742,11 +795,23 @@ RowLayout {
                     property var upHistory: NetworkUsage.uploadHistory
                     property real targetMax: 1024
                     property real smoothMax: targetMax
+                    property real slideProgress: 0
+                    property int _tickCount: 0
+                    property int _lastTickCount: -1
 
                     anchors.fill: parent
-                    onDownHistoryChanged: updateMax()
-                    onUpHistoryChanged: updateMax()
+                    onDownHistoryChanged: checkAndAnimate()
+                    onUpHistoryChanged: checkAndAnimate()
                     onSmoothMaxChanged: requestPaint()
+                    onSlideProgressChanged: requestPaint()
+
+                    function checkAndAnimate(): void {
+                        const currentLength = (downHistory || []).length;
+                        if (currentLength > 0 && _tickCount !== _lastTickCount) {
+                            _lastTickCount = _tickCount;
+                            updateMax();
+                        }
+                    }
 
                     function updateMax(): void {
                         const downHist = downHistory || [];
@@ -754,6 +819,21 @@ RowLayout {
                         const allValues = downHist.concat(upHist);
                         targetMax = Math.max(...allValues, 1024);
                         requestPaint();
+                    }
+
+                    Timer {
+                        interval: Config.dashboard.updateInterval
+                        running: true
+                        repeat: true
+                        onTriggered: sparklineCanvas._tickCount++
+                    }
+
+                    NumberAnimation on slideProgress {
+                        from: 0
+                        to: 1
+                        duration: Config.dashboard.updateInterval
+                        loops: Animation.Infinite
+                        running: true
                     }
 
                     onPaint: {
@@ -766,7 +846,6 @@ RowLayout {
                         if (downHist.length < 2 && upHist.length < 2)
                             return;
 
-                        // Use animated max value for smooth scaling
                         const maxVal = smoothMax;
 
                         function drawLine(history, color, fillAlpha) {
@@ -775,7 +854,7 @@ RowLayout {
 
                             const len = history.length;
                             const stepX = w / (NetworkUsage.historyLength - 1);
-                            const startX = w - (len - 1) * stepX;
+                            const startX = w - (len - 1) * stepX - stepX * slideProgress + stepX;
                             ctx.beginPath();
                             ctx.moveTo(startX, h - (history[0] / maxVal) * h);
                             for (let i = 1; i < len; i++) {
@@ -788,7 +867,6 @@ RowLayout {
                             ctx.lineCap = "round";
                             ctx.lineJoin = "round";
                             ctx.stroke();
-                            // Fill under the line
                             ctx.lineTo(startX + (len - 1) * stepX, h);
                             ctx.lineTo(startX, h);
                             ctx.closePath();
@@ -796,7 +874,6 @@ RowLayout {
                             ctx.fill();
                         }
 
-                        // Draw upload first (behind), then download (front)
                         drawLine(upHist, Colours.palette.m3secondary.toString(), 0.15);
                         drawLine(downHist, Colours.palette.m3tertiary.toString(), 0.2);
                     }
@@ -807,7 +884,6 @@ RowLayout {
                         function onPaletteChanged() {
                             sparklineCanvas.requestPaint();
                         }
-
                         target: Colours
                     }
 
@@ -816,7 +892,6 @@ RowLayout {
                             duration: Appearance.anim.durations.large
                         }
                     }
-
                 }
 
                 // "No data" placeholder
@@ -828,7 +903,6 @@ RowLayout {
                     visible: NetworkUsage.downloadHistory.length < 2
                     opacity: 0.6
                 }
-
             }
 
             // Download row
@@ -855,7 +929,6 @@ RowLayout {
                     font.weight: Font.Medium
                     color: Colours.palette.m3tertiary
                 }
-
             }
 
             // Upload row
@@ -882,7 +955,6 @@ RowLayout {
                     font.weight: Font.Medium
                     color: Colours.palette.m3secondary
                 }
-
             }
 
             // Session totals
@@ -909,11 +981,8 @@ RowLayout {
                     font.pointSize: Appearance.font.size.small
                     color: Colours.palette.m3onSurfaceVariant
                 }
-
             }
-
         }
-
     }
-
+    }
 }
