@@ -560,7 +560,40 @@ default, you must create it manually.
             "wallpapers": false
         },
         "showOnHover": false,
-        "hiddenApps": []
+        "favouriteApps": [],
+        "hiddenApps": [],
+        "categories": [
+            {
+                "name": "Development",
+                "icon": "code",
+                "apps": ["code-oss", "github-desktop"]
+            },
+            {
+                "name": "Graphics",
+                "icon": "palette",
+                "apps": ["org.inkscape.Inkscape", "gimp"]
+            },
+            {
+                "name": "Communication",
+                "icon": "chat",
+                "apps": ["vesktop", "discord"]
+            },
+            {
+                "name": "Media",
+                "icon": "play_circle",
+                "apps": ["spotify", "obs"]
+            },
+            {
+                "name": "Games",
+                "icon": "sports_esports",
+                "apps": ["steam"]
+            },
+            {
+                "name": "Utilities",
+                "icon": "build",
+                "apps": ["obs", "thunar"]
+            }
+        ]
     },
     "lock": {
         "recolourLogo": false

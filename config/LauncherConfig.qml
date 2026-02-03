@@ -3,6 +3,7 @@ import Quickshell.Io
 JsonObject {
     property bool enabled: true
     property bool showOnHover: false
+    property bool enableCategories: true
     property int maxShown: 7
     property int maxWallpapers: 9 // Warning: even numbers look bad
     property string specialPrefix: "@"
@@ -10,7 +11,17 @@ JsonObject {
     property bool enableDangerousActions: false // Allow actions that can cause losing data, like shutdown, reboot and logout
     property int dragThreshold: 50
     property bool vimKeybinds: false
+    property list<string> favouriteApps: []
     property list<string> hiddenApps: []
+    property list<var> categories: [
+        { name: "Development", icon: "code", apps: [] },
+        { name: "Graphics", icon: "palette", apps: [] },
+        { name: "Communication", icon: "chat", apps: [] },
+        { name: "Media", icon: "play_circle", apps: [] },
+        { name: "Office", icon: "description", apps: [] },
+        { name: "Games", icon: "sports_esports", apps: [] },
+        { name: "Utilities", icon: "build", apps: [] }
+    ]
     property UseFuzzy useFuzzy: UseFuzzy {}
     property Sizes sizes: Sizes {}
 
