@@ -9,10 +9,11 @@ JsonObject {
     property Sizes sizes: Sizes {}
 
     component Commands: JsonObject {
-        property list<string> logout: ["loginctl", "kill-session", ""]
-        property list<string> shutdown: ["systemctl", "poweroff"]
+        property list<string> suspend: ["systemctl", "suspend-then-hibernate"]
+        property list<string> logout: ["hyprctl", "dispatch", "exit"]
         property list<string> hibernate: ["systemctl", "hibernate"]
         property list<string> reboot: ["systemctl", "reboot"]
+        property list<string> shutdown: ["systemctl", "poweroff"]
     }
 
     component Sizes: JsonObject {

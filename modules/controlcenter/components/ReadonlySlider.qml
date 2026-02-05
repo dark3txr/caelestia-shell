@@ -53,7 +53,7 @@ ColumnLayout {
         implicitHeight: Appearance.padding.normal
         radius: Appearance.rounding.full
         color: Colours.layer(Colours.palette.m3surfaceContainerHighest, 1)
-        opacity: root.readonly ? 0.5 : 1.0
+        opacity: root.readonly ? 0.1 : 1.0
 
         StyledRect {
             anchors.left: parent.left

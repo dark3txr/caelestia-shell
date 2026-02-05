@@ -16,12 +16,12 @@ Column {
     spacing: Appearance.spacing.large
 
     SessionButton {
-        id: logout
+        id: suspend
 
-        icon: "logout"
-        command: Config.session.commands.logout
+        icon: "bedtime"
+        command: Config.session.commands.suspend
 
-        KeyNavigation.down: shutdown
+        KeyNavigation.down: logout
 
         Component.onCompleted: forceActiveFocus()
 
@@ -36,25 +36,13 @@ Column {
     }
 
     SessionButton {
-        id: shutdown
+        id: logout
 
-        icon: "power_settings_new"
-        command: Config.session.commands.shutdown
+        icon: "logout"
+        command: Config.session.commands.logout
 
-        KeyNavigation.up: logout
+        KeyNavigation.up: suspend
         KeyNavigation.down: hibernate
-    }
-
-    AnimatedImage {
-        width: Config.session.sizes.button
-        height: Config.session.sizes.button
-        sourceSize.width: width
-        sourceSize.height: height
-
-        playing: visible
-        asynchronous: true
-        speed: Appearance.anim.sessionGifSpeed
-        source: Paths.absolutePath(Config.paths.sessionGif)
     }
 
     SessionButton {
@@ -63,7 +51,7 @@ Column {
         icon: "downloading"
         command: Config.session.commands.hibernate
 
-        KeyNavigation.up: shutdown
+        KeyNavigation.up: logout
         KeyNavigation.down: reboot
     }
 
@@ -74,6 +62,16 @@ Column {
         command: Config.session.commands.reboot
 
         KeyNavigation.up: hibernate
+        KeyNavigation.down: shutdown
+    }
+
+    SessionButton {
+        id: shutdown
+
+        icon: "power_settings_new"
+        command: Config.session.commands.shutdown
+
+        KeyNavigation.up: reboot
     }
 
     component SessionButton: StyledRect {
@@ -86,7 +84,7 @@ Column {
         implicitHeight: Config.session.sizes.button
 
         radius: Appearance.rounding.large
-        color: button.activeFocus ? Colours.palette.m3secondaryContainer : Colours.tPalette.m3surfaceContainer
+        color: button.activeFocus ? Colours.palette.m3primaryContainer : Colours.tPalette.m3surfaceContainer
 
         Keys.onEnterPressed: Quickshell.execDetached(button.command)
         Keys.onReturnPressed: Quickshell.execDetached(button.command)

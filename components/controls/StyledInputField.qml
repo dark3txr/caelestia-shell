@@ -32,7 +32,7 @@ Item {
         radius: Appearance.rounding.small
         border.width: 1
         border.color: inputField.activeFocus ? Colours.palette.m3primary : Qt.alpha(Colours.palette.m3outline, 0.3)
-        opacity: root.enabled ? 1 : 0.5
+        opacity: root.enabled ? 1 : 0.1
 
         Behavior on color {
             CAnim {}

@@ -148,7 +148,7 @@ Item {
                     text: Time.format("dddd")
                     font.pointSize: Appearance.font.size.larger * root.scale
                     font.letterSpacing: 2
-                    color: root.safeSecondary
+                    color: root.safeTertiary
                 }
             }
         }
