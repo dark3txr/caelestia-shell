@@ -300,6 +300,7 @@ Singleton {
         return {
             enabled: launcher.enabled,
             showOnHover: launcher.showOnHover,
+            enableCategories: launcher.enableCategories,
             maxShown: launcher.maxShown,
             maxWallpapers: launcher.maxWallpapers,
             specialPrefix: launcher.specialPrefix,
@@ -307,7 +308,9 @@ Singleton {
             enableDangerousActions: launcher.enableDangerousActions,
             dragThreshold: launcher.dragThreshold,
             vimKeybinds: launcher.vimKeybinds,
+            favouriteApps: launcher.favouriteApps,
             hiddenApps: launcher.hiddenApps,
+            categories: launcher.categories,
             useFuzzy: {
                 apps: launcher.useFuzzy.apps,
                 actions: launcher.useFuzzy.actions,
