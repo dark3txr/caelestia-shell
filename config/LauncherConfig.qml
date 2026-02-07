@@ -11,6 +11,17 @@ JsonObject {
     property int dragThreshold: 50
     property bool vimKeybinds: false
     property list<string> hiddenApps: []
+    property list<var> contextMenuMain: []
+    property list<var> contextMenuAdvanced: []
+    property list<var> categories: [
+        { name: "Development", icon: "code", apps: [] },
+        { name: "Graphics", icon: "palette", apps: [] },
+        { name: "Communication", icon: "chat", apps: [] },
+        { name: "Media", icon: "play_circle", apps: [] },
+        { name: "Office", icon: "description", apps: [] },
+        { name: "Games", icon: "sports_esports", apps: [] },
+        { name: "Utilities", icon: "build", apps: [] }
+    ]
     property UseFuzzy useFuzzy: UseFuzzy {}
     property Sizes sizes: Sizes {}
 
@@ -35,14 +46,6 @@ JsonObject {
             icon: "calculate",
             description: "Do simple maths equations",
             command: ["autocomplete", "calc"],
-            enabled: true,
-            dangerous: false
-        },
-        {
-            name: "Python",
-            icon: "code",
-            description: "Execute Python one-liners",
-            command: ["autocomplete", "python"],
             enabled: true,
             dangerous: false
         },
