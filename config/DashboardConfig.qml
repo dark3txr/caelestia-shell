@@ -2,7 +2,7 @@ import Quickshell.Io
 
 JsonObject {
     property bool enabled: true
-    property bool showOnHover: true
+    property bool showOnHover: false
     property int updateInterval: 1000
     property int dragThreshold: 50
     property bool showClockSeconds: true

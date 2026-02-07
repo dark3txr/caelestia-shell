@@ -11,18 +11,18 @@ JsonObject {
     property bool enableDangerousActions: true // Allow actions that can cause losing data, like shutdown, reboot and logout
     property int dragThreshold: 50
     property bool vimKeybinds: false
-    property list<string> favouriteApps: []
+    property list<string> favouriteApps: ["rog-control-center", "zen", "vesktop", "geometrydash", "spotify-launcher"]
     property list<string> hiddenApps: []
     property list<var> contextMenuMain: []
     property list<var> contextMenuAdvanced: []
     property list<var> categories: [
-        { name: "Development", icon: "code", apps: [] },
-        { name: "Graphics", icon: "palette", apps: [] },
-        { name: "Communication", icon: "chat", apps: [] },
-        { name: "Media", icon: "play_circle", apps: [] },
-        { name: "Office", icon: "description", apps: [] },
-        { name: "Games", icon: "sports_esports", apps: [] },
-        { name: "Utilities", icon: "build", apps: [] }
+        { name: "Development", icon: "code", apps: ["nvim", "github-desktop", "lmstudio", "stable-diffusion", "virt-manager"] },
+        { name: "Graphics", icon: "palette", apps: ["org.gnome.gThumb", "com.obsproject.Studio"] },
+        { name: "Communication", icon: "chat", apps: ["vesktop"] },
+        { name: "Media", icon: "play_circle", apps: ["spotify-launcher", "mpv", "com.obsproject.Studio", "qvidcap", "qv4l2"] },
+        { name: "Office", icon: "description", apps: ["thunar"] },
+        { name: "Games", icon: "sports_esports", apps: ["geometrydash", "net.lutris.Lutris", "org.qbittorrent.qBittorrent"] },
+        { name: "Utilities", icon: "build", apps: ["nm-connection-editor", "blueman-manager", "gparted", "btop", "rog-control-center", "net.davidotek.pupgui2"] }
     ]
     property UseFuzzy useFuzzy: UseFuzzy {}
     property Sizes sizes: Sizes {}
