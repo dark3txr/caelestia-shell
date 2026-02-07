@@ -1,0 +1,331 @@
+[
+    {
+        "classes": [
+            {
+                "className": "AudioCollector",
+                "lineNumber": 46,
+                "object": true,
+                "qualifiedClassName": "caelestia::services::AudioCollector",
+                "superClasses": [
+                    {
+                        "access": "public",
+                        "fullyQualifiedName": "caelestia::services::Service",
+                        "name": "Service"
+                    }
+                ]
+            }
+        ],
+        "inputFile": "audiocollector.hpp",
+        "outputRevision": 69
+    },
+    {
+        "classes": [
+            {
+                "className": "AudioProcessor",
+                "lineNumber": 9,
+                "object": true,
+                "qualifiedClassName": "caelestia::services::AudioProcessor",
+                "slots": [
+                    {
+                        "access": "public",
+                        "index": 0,
+                        "lineNumber": 19,
+                        "name": "start",
+                        "returnType": "void"
+                    },
+                    {
+                        "access": "public",
+                        "index": 1,
+                        "lineNumber": 20,
+                        "name": "stop",
+                        "returnType": "void"
+                    }
+                ],
+                "superClasses": [
+                    {
+                        "access": "public",
+                        "name": "QObject"
+                    }
+                ]
+            },
+            {
+                "className": "AudioProvider",
+                "lineNumber": 29,
+                "object": true,
+                "qualifiedClassName": "caelestia::services::AudioProvider",
+                "superClasses": [
+                    {
+                        "access": "public",
+                        "fullyQualifiedName": "caelestia::services::Service",
+                        "name": "Service"
+                    }
+                ]
+            }
+        ],
+        "inputFile": "audioprovider.hpp",
+        "outputRevision": 69
+    },
+    {
+        "classes": [
+            {
+                "className": "BeatProcessor",
+                "lineNumber": 9,
+                "object": true,
+                "qualifiedClassName": "caelestia::services::BeatProcessor",
+                "signals": [
+                    {
+                        "access": "public",
+                        "arguments": [
+                            {
+                                "name": "bpm",
+                                "type": "smpl_t"
+                            }
+                        ],
+                        "index": 0,
+                        "lineNumber": 17,
+                        "name": "beat",
+                        "returnType": "void"
+                    }
+                ],
+                "superClasses": [
+                    {
+                        "access": "public",
+                        "fullyQualifiedName": "caelestia::services::AudioProcessor",
+                        "name": "AudioProcessor"
+                    }
+                ]
+            },
+            {
+                "classInfos": [
+                    {
+                        "name": "QML.Element",
+                        "value": "auto"
+                    }
+                ],
+                "className": "BeatTracker",
+                "lineNumber": 28,
+                "object": true,
+                "properties": [
+                    {
+                        "constant": false,
+                        "designable": true,
+                        "final": false,
+                        "index": 0,
+                        "lineNumber": 32,
+                        "name": "bpm",
+                        "notify": "bpmChanged",
+                        "read": "bpm",
+                        "required": false,
+                        "scriptable": true,
+                        "stored": true,
+                        "type": "smpl_t",
+                        "user": false
+                    }
+                ],
+                "qualifiedClassName": "caelestia::services::BeatTracker",
+                "signals": [
+                    {
+                        "access": "public",
+                        "index": 0,
+                        "lineNumber": 40,
+                        "name": "bpmChanged",
+                        "returnType": "void"
+                    },
+                    {
+                        "access": "public",
+                        "arguments": [
+                            {
+                                "name": "bpm",
+                                "type": "smpl_t"
+                            }
+                        ],
+                        "index": 1,
+                        "lineNumber": 41,
+                        "name": "beat",
+                        "returnType": "void"
+                    }
+                ],
+                "superClasses": [
+                    {
+                        "access": "public",
+                        "fullyQualifiedName": "caelestia::services::AudioProvider",
+                        "name": "AudioProvider"
+                    }
+                ]
+            }
+        ],
+        "inputFile": "beattracker.hpp",
+        "outputRevision": 69
+    },
+    {
+        "classes": [
+            {
+                "className": "CavaProcessor",
+                "lineNumber": 9,
+                "object": true,
+                "qualifiedClassName": "caelestia::services::CavaProcessor",
+                "signals": [
+                    {
+                        "access": "public",
+                        "arguments": [
+                            {
+                                "name": "values",
+                                "type": "QList<double>"
+                            }
+                        ],
+                        "index": 0,
+                        "lineNumber": 19,
+                        "name": "valuesChanged",
+                        "returnType": "void"
+                    }
+                ],
+                "superClasses": [
+                    {
+                        "access": "public",
+                        "fullyQualifiedName": "caelestia::services::AudioProcessor",
+                        "name": "AudioProcessor"
+                    }
+                ]
+            },
+            {
+                "classInfos": [
+                    {
+                        "name": "QML.Element",
+                        "value": "auto"
+                    }
+                ],
+                "className": "CavaProvider",
+                "lineNumber": 37,
+                "object": true,
+                "properties": [
+                    {
+                        "constant": false,
+                        "designable": true,
+                        "final": false,
+                        "index": 0,
+                        "lineNumber": 41,
+                        "name": "bars",
+                        "notify": "barsChanged",
+                        "read": "bars",
+                        "required": false,
+                        "scriptable": true,
+                        "stored": true,
+                        "type": "int",
+                        "user": false,
+                        "write": "setBars"
+                    },
+                    {
+                        "constant": false,
+                        "designable": true,
+                        "final": false,
+                        "index": 1,
+                        "lineNumber": 43,
+                        "name": "values",
+                        "notify": "valuesChanged",
+                        "read": "values",
+                        "required": false,
+                        "scriptable": true,
+                        "stored": true,
+                        "type": "QList<double>",
+                        "user": false
+                    }
+                ],
+                "qualifiedClassName": "caelestia::services::CavaProvider",
+                "signals": [
+                    {
+                        "access": "public",
+                        "index": 0,
+                        "lineNumber": 54,
+                        "name": "barsChanged",
+                        "returnType": "void"
+                    },
+                    {
+                        "access": "public",
+                        "index": 1,
+                        "lineNumber": 55,
+                        "name": "valuesChanged",
+                        "returnType": "void"
+                    }
+                ],
+                "superClasses": [
+                    {
+                        "access": "public",
+                        "fullyQualifiedName": "caelestia::services::AudioProvider",
+                        "name": "AudioProvider"
+                    }
+                ]
+            }
+        ],
+        "inputFile": "cavaprovider.hpp",
+        "outputRevision": 69
+    },
+    {
+        "classes": [
+            {
+                "className": "Service",
+                "lineNumber": 8,
+                "object": true,
+                "qualifiedClassName": "caelestia::services::Service",
+                "superClasses": [
+                    {
+                        "access": "public",
+                        "name": "QObject"
+                    }
+                ]
+            }
+        ],
+        "inputFile": "service.hpp",
+        "outputRevision": 69
+    },
+    {
+        "classes": [
+            {
+                "classInfos": [
+                    {
+                        "name": "QML.Element",
+                        "value": "auto"
+                    }
+                ],
+                "className": "ServiceRef",
+                "lineNumber": 9,
+                "object": true,
+                "properties": [
+                    {
+                        "constant": false,
+                        "designable": true,
+                        "final": false,
+                        "index": 0,
+                        "lineNumber": 13,
+                        "name": "service",
+                        "notify": "serviceChanged",
+                        "read": "service",
+                        "required": false,
+                        "scriptable": true,
+                        "stored": true,
+                        "type": "caelestia::services::Service*",
+                        "user": false,
+                        "write": "setService"
+                    }
+                ],
+                "qualifiedClassName": "caelestia::services::ServiceRef",
+                "signals": [
+                    {
+                        "access": "public",
+                        "index": 0,
+                        "lineNumber": 22,
+                        "name": "serviceChanged",
+                        "returnType": "void"
+                    }
+                ],
+                "superClasses": [
+                    {
+                        "access": "public",
+                        "name": "QObject"
+                    }
+                ]
+            }
+        ],
+        "inputFile": "serviceref.hpp",
+        "outputRevision": 69
+    }
+]

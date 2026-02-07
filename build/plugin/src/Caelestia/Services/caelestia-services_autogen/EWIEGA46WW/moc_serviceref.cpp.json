@@ -1,0 +1,51 @@
+{
+    "classes": [
+        {
+            "classInfos": [
+                {
+                    "name": "QML.Element",
+                    "value": "auto"
+                }
+            ],
+            "className": "ServiceRef",
+            "lineNumber": 9,
+            "object": true,
+            "properties": [
+                {
+                    "constant": false,
+                    "designable": true,
+                    "final": false,
+                    "index": 0,
+                    "lineNumber": 13,
+                    "name": "service",
+                    "notify": "serviceChanged",
+                    "read": "service",
+                    "required": false,
+                    "scriptable": true,
+                    "stored": true,
+                    "type": "caelestia::services::Service*",
+                    "user": false,
+                    "write": "setService"
+                }
+            ],
+            "qualifiedClassName": "caelestia::services::ServiceRef",
+            "signals": [
+                {
+                    "access": "public",
+                    "index": 0,
+                    "lineNumber": 22,
+                    "name": "serviceChanged",
+                    "returnType": "void"
+                }
+            ],
+            "superClasses": [
+                {
+                    "access": "public",
+                    "name": "QObject"
+                }
+            ]
+        }
+    ],
+    "inputFile": "serviceref.hpp",
+    "outputRevision": 69
+}

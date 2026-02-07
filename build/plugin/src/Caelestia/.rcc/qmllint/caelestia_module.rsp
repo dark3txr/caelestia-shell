@@ -1,0 +1,12 @@
+-I
+/etc/xdg/quickshell/caelestia/build/qml
+-I
+/etc/xdg/quickshell/caelestia/build/qml/Caelestia
+-I
+/etc/xdg/quickshell/caelestia/build/qml
+-I
+/usr/lib/qt6/qml
+--resource
+/etc/xdg/quickshell/caelestia/build/plugin/src/Caelestia/.qt/rcc/qmake_Caelestia.qrc
+--module
+Caelestia

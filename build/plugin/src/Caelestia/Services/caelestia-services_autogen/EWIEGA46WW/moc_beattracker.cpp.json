@@ -1,0 +1,92 @@
+{
+    "classes": [
+        {
+            "className": "BeatProcessor",
+            "lineNumber": 9,
+            "object": true,
+            "qualifiedClassName": "caelestia::services::BeatProcessor",
+            "signals": [
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "bpm",
+                            "type": "smpl_t"
+                        }
+                    ],
+                    "index": 0,
+                    "lineNumber": 17,
+                    "name": "beat",
+                    "returnType": "void"
+                }
+            ],
+            "superClasses": [
+                {
+                    "access": "public",
+                    "fullyQualifiedName": "caelestia::services::AudioProcessor",
+                    "name": "AudioProcessor"
+                }
+            ]
+        },
+        {
+            "classInfos": [
+                {
+                    "name": "QML.Element",
+                    "value": "auto"
+                }
+            ],
+            "className": "BeatTracker",
+            "lineNumber": 28,
+            "object": true,
+            "properties": [
+                {
+                    "constant": false,
+                    "designable": true,
+                    "final": false,
+                    "index": 0,
+                    "lineNumber": 32,
+                    "name": "bpm",
+                    "notify": "bpmChanged",
+                    "read": "bpm",
+                    "required": false,
+                    "scriptable": true,
+                    "stored": true,
+                    "type": "smpl_t",
+                    "user": false
+                }
+            ],
+            "qualifiedClassName": "caelestia::services::BeatTracker",
+            "signals": [
+                {
+                    "access": "public",
+                    "index": 0,
+                    "lineNumber": 40,
+                    "name": "bpmChanged",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "bpm",
+                            "type": "smpl_t"
+                        }
+                    ],
+                    "index": 1,
+                    "lineNumber": 41,
+                    "name": "beat",
+                    "returnType": "void"
+                }
+            ],
+            "superClasses": [
+                {
+                    "access": "public",
+                    "fullyQualifiedName": "caelestia::services::AudioProvider",
+                    "name": "AudioProvider"
+                }
+            ]
+        }
+    ],
+    "inputFile": "beattracker.hpp",
+    "outputRevision": 69
+}

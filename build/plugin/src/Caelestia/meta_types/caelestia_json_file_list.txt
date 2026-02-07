@@ -1,0 +1,6 @@
+/etc/xdg/quickshell/caelestia/build/plugin/src/Caelestia/caelestia_autogen/include/../EWIEGA46WW/moc_appdb.cpp.json
+/etc/xdg/quickshell/caelestia/build/plugin/src/Caelestia/caelestia_autogen/include/../EWIEGA46WW/moc_cutils.cpp.json
+/etc/xdg/quickshell/caelestia/build/plugin/src/Caelestia/caelestia_autogen/include/../EWIEGA46WW/moc_imageanalyser.cpp.json
+/etc/xdg/quickshell/caelestia/build/plugin/src/Caelestia/caelestia_autogen/include/../EWIEGA46WW/moc_qalculator.cpp.json
+/etc/xdg/quickshell/caelestia/build/plugin/src/Caelestia/caelestia_autogen/include/../EWIEGA46WW/moc_requests.cpp.json
+/etc/xdg/quickshell/caelestia/build/plugin/src/Caelestia/caelestia_autogen/include/../EWIEGA46WW/moc_toaster.cpp.json

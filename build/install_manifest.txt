@@ -1,0 +1,17 @@
+/usr/lib/caelestia/version
+/usr/lib/qt6/qml/Caelestia/libcaelestia.so
+/usr/lib/qt6/qml/Caelestia/libcaelestiaplugin.so
+/usr/lib/qt6/qml/Caelestia/qmldir
+/usr/lib/qt6/qml/Caelestia/caelestia.qmltypes
+/usr/lib/qt6/qml/Caelestia/Internal/libcaelestia-internal.so
+/usr/lib/qt6/qml/Caelestia/Internal/libcaelestia-internalplugin.so
+/usr/lib/qt6/qml/Caelestia/Internal/qmldir
+/usr/lib/qt6/qml/Caelestia/Internal/caelestia-internal.qmltypes
+/usr/lib/qt6/qml/Caelestia/Models/libcaelestia-models.so
+/usr/lib/qt6/qml/Caelestia/Models/libcaelestia-modelsplugin.so
+/usr/lib/qt6/qml/Caelestia/Models/qmldir
+/usr/lib/qt6/qml/Caelestia/Models/caelestia-models.qmltypes
+/usr/lib/qt6/qml/Caelestia/Services/libcaelestia-services.so
+/usr/lib/qt6/qml/Caelestia/Services/libcaelestia-servicesplugin.so
+/usr/lib/qt6/qml/Caelestia/Services/qmldir
+/usr/lib/qt6/qml/Caelestia/Services/caelestia-services.qmltypes

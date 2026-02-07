@@ -1,0 +1,47 @@
+{
+    "classes": [
+        {
+            "className": "AudioProcessor",
+            "lineNumber": 9,
+            "object": true,
+            "qualifiedClassName": "caelestia::services::AudioProcessor",
+            "slots": [
+                {
+                    "access": "public",
+                    "index": 0,
+                    "lineNumber": 19,
+                    "name": "start",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "index": 1,
+                    "lineNumber": 20,
+                    "name": "stop",
+                    "returnType": "void"
+                }
+            ],
+            "superClasses": [
+                {
+                    "access": "public",
+                    "name": "QObject"
+                }
+            ]
+        },
+        {
+            "className": "AudioProvider",
+            "lineNumber": 29,
+            "object": true,
+            "qualifiedClassName": "caelestia::services::AudioProvider",
+            "superClasses": [
+                {
+                    "access": "public",
+                    "fullyQualifiedName": "caelestia::services::Service",
+                    "name": "Service"
+                }
+            ]
+        }
+    ],
+    "inputFile": "audioprovider.hpp",
+    "outputRevision": 69
+}

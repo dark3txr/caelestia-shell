@@ -1,0 +1,13 @@
+{
+	"InstallScripts" : 
+	[
+		"/etc/xdg/quickshell/caelestia/build/cmake_install.cmake",
+		"/etc/xdg/quickshell/caelestia/build/extras/cmake_install.cmake",
+		"/etc/xdg/quickshell/caelestia/build/plugin/cmake_install.cmake",
+		"/etc/xdg/quickshell/caelestia/build/plugin/src/Caelestia/cmake_install.cmake",
+		"/etc/xdg/quickshell/caelestia/build/plugin/src/Caelestia/Internal/cmake_install.cmake",
+		"/etc/xdg/quickshell/caelestia/build/plugin/src/Caelestia/Models/cmake_install.cmake",
+		"/etc/xdg/quickshell/caelestia/build/plugin/src/Caelestia/Services/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

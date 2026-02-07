@@ -1,0 +1,19 @@
+{
+    "classes": [
+        {
+            "className": "AudioCollector",
+            "lineNumber": 46,
+            "object": true,
+            "qualifiedClassName": "caelestia::services::AudioCollector",
+            "superClasses": [
+                {
+                    "access": "public",
+                    "fullyQualifiedName": "caelestia::services::Service",
+                    "name": "Service"
+                }
+            ]
+        }
+    ],
+    "inputFile": "audiocollector.hpp",
+    "outputRevision": 69
+}

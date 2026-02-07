@@ -1,0 +1,13 @@
+--bare
+-I
+/etc/xdg/quickshell/caelestia/build/qml
+-I
+/etc/xdg/quickshell/caelestia/build/qml/Caelestia/Models
+-I
+/etc/xdg/quickshell/caelestia/build/qml
+-I
+/usr/lib/qt6/qml
+--resource
+/etc/xdg/quickshell/caelestia/build/plugin/src/Caelestia/Models/.qt/rcc/qmake_Caelestia_Models.qrc
+--json
+/etc/xdg/quickshell/caelestia/build/caelestia-models_qmllint.json
