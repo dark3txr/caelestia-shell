@@ -14,11 +14,9 @@ Item {
         return `${Math.ceil(Config.services.useFahrenheit ? temp * 1.8 + 32 : temp)}°${Config.services.useFahrenheit ? "F" : "C"}`;
     }
 
-    readonly property int minWidth: 400 + 400 + Appearance.spacing.normal + 120 + Appearance.padding.large * 2
-    readonly property bool upperRowVisible: Config.dashboard.performance.showCpu || (Config.dashboard.performance.showGpu && SystemUsage.gpuType !== "NONE")
-    readonly property int minHeight: upperRowVisible ? 400 : 220
+    readonly property int minWidth: 400 + 400 + Appearance.spacing.normal + 120 + Appearance.padding.large * 2 
     implicitWidth: Math.max(minWidth, content.implicitWidth)
-    implicitHeight: Math.max(minHeight, placeholder.visible ? placeholder.height : content.implicitHeight)
+    implicitHeight:  placeholder.visible ? placeholder.height : content.implicitHeight
 
     StyledRect {
         id: placeholder
@@ -26,7 +24,7 @@ Item {
         anchors.centerIn: parent
         width: 400
         height: 350
-        radius: Appearance.rounding.large
+        radius: Appearance.rounding.small
         color: Colours.tPalette.m3surfaceContainer
         visible: !Config.dashboard.performance.showCpu &&
                  !(Config.dashboard.performance.showGpu && SystemUsage.gpuType !== "NONE") &&
@@ -65,7 +63,8 @@ Item {
     RowLayout {
         id: content
 
-        anchors.fill: parent
+        anchors.left: parent.left
+        anchors.right: parent.right
         spacing: Appearance.spacing.normal
         visible: !placeholder.visible
 
@@ -74,7 +73,7 @@ Item {
     }
 
     ColumnLayout {
-        Layout.fillHeight: true
+        id: mainColumn
         Layout.fillWidth: true
         spacing: Appearance.spacing.normal
 
@@ -121,6 +120,7 @@ Item {
         RowLayout {
             Layout.fillWidth: true
             spacing: Appearance.spacing.normal
+            visible: Config.dashboard.performance.showMemory || Config.dashboard.performance.showStorage || Config.dashboard.performance.showNetwork
 
             GaugeCard {
                 Layout.minimumWidth: 250
@@ -158,8 +158,7 @@ Item {
 
     BatteryTank {
         Layout.preferredWidth: 120
-        Layout.fillHeight: true
-        Layout.minimumHeight: 350
+        Layout.preferredHeight: mainColumn.implicitHeight
         visible: UPower.displayDevice.isLaptopBattery && Config.dashboard.performance.showBattery
     }
 
@@ -172,7 +171,7 @@ Item {
         property real animatedPercentage: 0
 
         color: Colours.tPalette.m3surfaceContainer
-        radius: Appearance.rounding.large
+        radius: Appearance.rounding.small
         Component.onCompleted: animatedPercentage = percentage
         onPercentageChanged: animatedPercentage = percentage
 
@@ -360,7 +359,7 @@ Item {
         property real animatedTemp: 0
 
         color: Colours.tPalette.m3surfaceContainer
-        radius: Appearance.rounding.large
+        radius: Appearance.rounding.small
         Component.onCompleted: {
             animatedUsage = usage;
             animatedTemp = tempProgress;
@@ -490,7 +489,7 @@ Item {
         property real animatedPercentage: 0
 
         color: Colours.tPalette.m3surfaceContainer
-        radius: Appearance.rounding.large
+        radius: Appearance.rounding.small
         clip: true
         Component.onCompleted: animatedPercentage = percentage
         onPercentageChanged: animatedPercentage = percentage
@@ -598,7 +597,7 @@ Item {
         property color accentColor: Colours.palette.m3secondary
 
         color: Colours.tPalette.m3surfaceContainer
-        radius: Appearance.rounding.large
+        radius: Appearance.rounding.small
         clip: true
         Component.onCompleted: {
             diskCount = SystemUsage.disks.length;
@@ -765,7 +764,7 @@ Item {
         property color accentColor: Colours.palette.m3primary
 
         color: Colours.tPalette.m3surfaceContainer
-        radius: Appearance.rounding.large
+        radius: Appearance.rounding.small
         clip: true
 
         Ref {
@@ -916,14 +915,20 @@ Item {
                     font.pointSize: Appearance.font.size.normal
                 }
 
+                StyledText {
+                    text: qsTr("Download")
+                    font.pointSize: Appearance.font.size.small
+                    color: Colours.palette.m3onSurfaceVariant
+                }
+
                 Item {
                     Layout.fillWidth: true
                 }
 
                 StyledText {
                     text: {
-                        const fmt = NetworkUsage.formatBytes(NetworkUsage.downloadSpeed);
-                        return `${fmt.value.toFixed(1)} ${fmt.unit}`;
+                        const fmt = NetworkUsage.formatBytes(NetworkUsage.downloadSpeed ?? 0);
+                        return fmt ? `${fmt.value.toFixed(1)} ${fmt.unit}` : "0.0 B/s";
                     }
                     font.pointSize: Appearance.font.size.normal
                     font.weight: Font.Medium
@@ -942,14 +947,20 @@ Item {
                     font.pointSize: Appearance.font.size.normal
                 }
 
+                StyledText {
+                    text: qsTr("Upload")
+                    font.pointSize: Appearance.font.size.small
+                    color: Colours.palette.m3onSurfaceVariant
+                }
+
                 Item {
                     Layout.fillWidth: true
                 }
 
                 StyledText {
                     text: {
-                        const fmt = NetworkUsage.formatBytes(NetworkUsage.uploadSpeed);
-                        return `${fmt.value.toFixed(1)} ${fmt.unit}`;
+                        const fmt = NetworkUsage.formatBytes(NetworkUsage.uploadSpeed ?? 0);
+                        return fmt ? `${fmt.value.toFixed(1)} ${fmt.unit}` : "0.0 B/s";
                     }
                     font.pointSize: Appearance.font.size.normal
                     font.weight: Font.Medium
@@ -968,15 +979,21 @@ Item {
                     font.pointSize: Appearance.font.size.normal
                 }
 
+                StyledText {
+                    text: qsTr("Total")
+                    font.pointSize: Appearance.font.size.small
+                    color: Colours.palette.m3onSurfaceVariant
+                }
+
                 Item {
                     Layout.fillWidth: true
                 }
 
                 StyledText {
                     text: {
-                        const down = NetworkUsage.formatBytesTotal(NetworkUsage.downloadTotal);
-                        const up = NetworkUsage.formatBytesTotal(NetworkUsage.uploadTotal);
-                        return `↓${down.value.toFixed(1)}${down.unit} ↑${up.value.toFixed(1)}${up.unit}`;
+                        const down = NetworkUsage.formatBytesTotal(NetworkUsage.downloadTotal ?? 0);
+                        const up = NetworkUsage.formatBytesTotal(NetworkUsage.uploadTotal ?? 0);
+                        return (down && up) ? `↓${down.value.toFixed(1)}${down.unit} ↑${up.value.toFixed(1)}${up.unit}` : "↓0.0B ↑0.0B";
                     }
                     font.pointSize: Appearance.font.size.small
                     color: Colours.palette.m3onSurfaceVariant

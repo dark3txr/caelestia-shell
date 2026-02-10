@@ -69,7 +69,7 @@ Item {
             Layout.fillWidth: true
             implicitHeight: bigInfoRow.implicitHeight + Appearance.padding.small * 2
 
-            radius: Appearance.rounding.normal
+            radius: Appearance.rounding.small
             color: Colours.tPalette.m3surfaceContainer
 
             RowLayout {
@@ -159,7 +159,7 @@ Item {
                     Layout.fillWidth: true
                     implicitHeight: forecastItemColumn.implicitHeight + Appearance.padding.normal * 2
 
-                    radius: Appearance.rounding.normal
+                    radius: Appearance.rounding.small
                     color: Colours.tPalette.m3surfaceContainer
 
                     ColumnLayout {
