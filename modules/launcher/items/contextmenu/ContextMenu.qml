@@ -404,7 +404,7 @@ Item {
             property real smoothPxTop: isTopAligned ? 0 : 12
             property real smoothPxBottom: isBottomAligned ? 0 : 12
 
-            property color fillColor: Colours.palette.m3surfaceContainer
+            property color fillColor: Colours.tPalette.m3surface
             property color shadowColor: Qt.rgba(0, 0, 0, 0.20)
             property vector2d shadowOffsetPx: Qt.vector2d(0, 0)
             property real shadowSoftPx: 6
