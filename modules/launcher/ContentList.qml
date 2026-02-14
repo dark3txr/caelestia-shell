@@ -1,5 +1,6 @@
 pragma ComponentBehavior: Bound
 
+import "services"
 import qs.components
 import qs.components.controls
 import qs.services
@@ -21,14 +22,24 @@ Item {
     required property string activeCategory
 
     readonly property bool showWallpapers: search.text.startsWith(`${Config.launcher.actionPrefix}wallpaper `)
-    readonly property Item currentList: showWallpapers ? wallpaperList.item : appList.item
+    readonly property bool showFileSearch: search.text.startsWith(`${Config.launcher.actionPrefix}search `)
+    readonly property Item currentList: {
+        if (showWallpapers) return wallpaperList.item;
+        if (showFileSearch) return fileSearchList.item;
+        return appList.item;
+    }
+
 
     anchors.horizontalCenter: parent.horizontalCenter
     anchors.top: parent.top
     anchors.bottom: parent.bottom
 
     clip: true
-    state: showWallpapers ? "wallpapers" : "apps"
+    state: {
+        if (showWallpapers) return "wallpapers";
+        if (showFileSearch) return "fileSearch";
+        return "apps";
+    }
 
     states: [
         State {
@@ -52,6 +63,20 @@ Item {
                 root.implicitWidth: Math.max(Config.launcher.sizes.itemWidth * 1.2, wallpaperList.implicitWidth)
                 root.implicitHeight: Config.launcher.sizes.wallpaperHeight
                 wallpaperList.active: true
+            }
+        },
+        State {
+            name: "fileSearch"
+
+            PropertyChanges {
+                root.implicitWidth: Config.launcher.sizes.itemWidth
+                root.implicitHeight: Math.min(root.maxHeight, fileSearchList.implicitHeight > 0 ? fileSearchList.implicitHeight : empty.implicitHeight)
+                fileSearchList.active: true
+            }
+
+            AnchorChanges {
+                anchors.left: root.parent.left
+                anchors.right: root.parent.right
             }
         }
     ]
@@ -112,6 +137,19 @@ Item {
         }
     }
 
+    Loader {
+        id: fileSearchList
+
+        active: false
+
+        anchors.fill: parent
+
+        sourceComponent: FileSearchList {
+            search: root.search
+            visibilities: root.visibilities
+        }
+    }
+
     Row {
         id: empty
 
@@ -125,7 +163,11 @@ Item {
         anchors.verticalCenter: parent.verticalCenter
 
         MaterialIcon {
-            text: root.state === "wallpapers" ? "wallpaper_slideshow" : "manage_search"
+            text: {
+                if (root.state === "wallpapers") return "wallpaper_slideshow";
+                if (root.state === "fileSearch") return "search";
+                return "manage_search";
+            }
             color: Colours.palette.m3onSurfaceVariant
             font.pointSize: Appearance.font.size.extraLarge
 
@@ -136,14 +178,28 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
 
             StyledText {
-                text: root.state === "wallpapers" ? qsTr("No wallpapers found") : qsTr("No results")
+                text: {
+                    if (root.state === "wallpapers") return qsTr("No wallpapers found");
+                    if (root.state === "fileSearch") return qsTr("No results");
+                    return qsTr("No results");
+                }
                 color: Colours.palette.m3onSurfaceVariant
                 font.pointSize: Appearance.font.size.larger
                 font.weight: 500
             }
 
             StyledText {
-                text: root.state === "wallpapers" && Wallpapers.list.length === 0 ? qsTr("Try putting some wallpapers in %1").arg(Paths.shortenHome(Paths.wallsdir)) : qsTr("Try searching for something else")
+                text: {
+                    if (root.state === "wallpapers" && Wallpapers.list.length === 0) return qsTr("Try putting some wallpapers in %1").arg(Paths.shortenHome(Paths.wallsdir));
+                    if (root.state === "fileSearch") {
+                        if (FileSearch.notFound) {
+                            return qsTr("Try searching for something else")
+                        } else {
+                            return qsTr("Try searching for something")
+                        }
+                    }
+                    return qsTr("Try searching for something else")
+                }
                 color: Colours.palette.m3onSurfaceVariant
                 font.pointSize: Appearance.font.size.normal
             }
