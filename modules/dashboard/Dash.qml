@@ -88,7 +88,7 @@ GridLayout {
     }
 
     component Rect: StyledRect {
-        radius: Appearance.rounding.small
+        radius: Appearance.rounding.normal
         color: Colours.tPalette.m3surfaceContainer
     }
 }
