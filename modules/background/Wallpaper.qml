@@ -31,9 +31,9 @@ Item {
     }
 
     Loader {
+        id: placeholder
         anchors.fill: parent
-
-        active: !root.source
+        active: false
 
         sourceComponent: StyledRect {
             color: Colours.palette.m3surfaceContainer
@@ -95,6 +95,16 @@ Item {
                         }
                     }
                 }
+            }
+        }
+
+        Timer {
+            id: placeholderDelay
+            interval: 10
+            running: true
+            repeat: false
+            onTriggered: {
+                placeholder.active = !root.source
             }
         }
     }
