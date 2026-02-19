@@ -8,7 +8,7 @@ JsonObject {
     property int dragThreshold: 50
     property bool showClockSeconds: true
     property Sizes sizes: Sizes {}
-    property Performance: performance {}
+    property Performance performance: Performance {}
 
     component Performance: JsonObject {
         property bool showBattery: true

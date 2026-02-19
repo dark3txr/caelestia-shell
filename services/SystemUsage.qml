@@ -98,7 +98,7 @@ Singleton {
     Timer {
         running: root.refCount > 0
         repeat: true
-        interval: Config.dashboard.updateInterval * 10
+        interval: Config.dashboard.resourceUpdateIniterval * 10
         triggeredOnStart: true
 
         onTriggered: {
@@ -268,25 +268,25 @@ Singleton {
 
         running: false
         command: ["sh", "-c",
-            "if [\"$POWERPROFILE\" = \"performance\"]; then if command -v nvidia-smi >/dev/null 2>&1 && nvidia-smi -L >/dev/null 2>&1; then nvidia-smi --query-gpu=name --format=csv,noheader; else lspci 2>/dev/null | grep -i 'vga\\|3d\\|display' | head -1; fi; else lspci 2>/dev/null | grep -i 'vga\\|3d\\|display' | grep -vi 'nvidia' | sed 's/^[^:]*: *[^:]*: *//' | head -1 || nvidia-smi --query-gpu=name --format=csv,noheader; fi]
-        environment: ( { POWERPROFILE: root.powerProfile } )
+            "if [ \"$POWERPROFILE\" = \"performance\" ]; then " +
+                "if command -v nvidia-smi >/dev/null 2>&1 && nvidia-smi -L >/dev/null 2>&1; then nvidia-smi --query-gpu=name --format=csv,noheader; " +
+                "else lspci 2>/dev/null | grep -i 'vga\\|3d\\|display' | head -1; fi; " +
+            "else lspci 2>/dev/null | grep -i 'vga\\|3d\\|display' | grep -vi 'nvidia' | sed 's/^[^:]*: *[^:]*: *//' | head -1 || nvidia-smi --query-gpu=name --format=csv,noheader; fi"
+        ]
+        environment: ({ POWERPROFILE: root.powerProfile })
         stdout: StdioCollector {
             onStreamFinished: {
                 const output = text.trim();
                 if (!output)
                     return;
 
-                // Check if it's from nvidia-smi (clean GPU name)
                 if (output.toLowerCase().includes("nvidia") || output.toLowerCase().includes("geforce") || output.toLowerCase().includes("rtx") || output.toLowerCase().includes("gtx")) {
                     root.gpuName = root.cleanGpuName(output);
                 } else {
-                    // Parse lspci output: extract name from brackets or after colon
                     const bracketMatches = output.match(/\[([^\]]+)\]/g);
                     if (bracketMatches) {
                         root.gpuName = root.cleanGpuName(
-                            bracketMatches
-                                .map(b => b.slice(1, -1))
-                                .join(" ")
+                            bracketMatches.map(b => b.slice(1, -1)).join(" ")
                         );
                     } else {
                         const colonMatch = output.match(/:\s*(.+)/);
@@ -303,8 +303,7 @@ Singleton {
         running: !Config.services.gpuType 
         command: ["sh", "-c",
             "if [ \"$POWERPROFILE\" = \"performance\" ]; then " +
-                "if command -v nvidia-smi >/dev/null 2>&1 && nvidia-smi -L >/dev/null 2>&1; then echo NVIDIA; " +
-                "elif ls /sys/class/drm/card*/device/gpu_busy_percent 2>/dev/null | grep -q .; then echo GENERIC; " +
+                "if command -v nvidia-smi >/dev/null 2>&1 && nvidia-smi -L >/dev/null 2>&1; then echo NVIDIA; elif ls /sys/class/drm/card*/device/gpu_busy_percent 2>/dev/null | grep -q .; then echo GENERIC; " +
                 "else echo NONE; fi; " +
             "else " +
                 "if ls /sys/class/drm/card*/device/gpu_busy_percent 2>/dev/null | grep -q .; then echo GENERIC; " +

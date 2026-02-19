@@ -10,10 +10,11 @@ JsonObject {
     property Sizes sizes: Sizes {}
 
     component Icons: JsonObject {
+        property string suspend: "bedtime"
         property string logout: "logout"
-        property string shutdown: "power_settings_new"
         property string hibernate: "downloading"
         property string reboot: "cached"
+        property string shutdown: "power_settings_new"
     }
 
     component Commands: JsonObject {
