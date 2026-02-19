@@ -8,6 +8,7 @@ JsonObject {
     property Toasts toasts: Toasts {}
     property Vpn vpn: Vpn {}
     property NightLight nightLight: NightLight {}
+    property Calendar calendar: Calendar {}
 
     component Sizes: JsonObject {
         property int width: 430
@@ -45,5 +46,14 @@ JsonObject {
     component NightLight: JsonObject {
         property bool enabled: true
         property int temperature: 4500
+    }
+
+    component Calendar: JsonObject {
+        property bool enabled: true
+        property string dataPath: "~/.local/share/caelestia/calendar-events.json"
+        property bool showReminderToasts: true
+        property bool showUpcomingInSidebar: false
+        property int defaultReminderMinutes: 15
+        property list<var> quickReminderOptions: [5, 15, 30, 60, 1440]
     }
 }
