@@ -5,6 +5,7 @@ import qs.components
 import qs.services
 import qs.config
 import Quickshell
+import Quickshell.Hyprland
 import QtQuick
 import QtQuick.Layouts
 
@@ -13,7 +14,9 @@ Item {
 
     property DesktopEntry app: null
     property PersistentProperties visibilities
+    property var windowRef: null
     property bool showAbove: false
+    readonly property alias gooBounds: gooBounds
     property int activeSubmenuIndex: -1
     property int targetSubmenuIndex: -1
     property real submenuProgress: 0
@@ -39,23 +42,18 @@ Item {
     readonly property real gooMarginPx: 30
     readonly property real bottomPadding: 16
     property string currentPage: "main"
-    property bool pageTransitioning: false
 
     onVisibleChanged: {
-        if (!visible) {
+        if (!visible)
             currentPage = "main";
-        } else if (visible && app) {
+        else if (app)
             buildSubmenuMap();
-        }
     }
 
     function navigateToPage(page) {
-        if (currentPage === page || pageTransitioning)
+        if (currentPage === page)
             return;
-
-        pageTransitioning = true;
         menuColumn.opacity = 0;
-
         pageTransitionTimer.page = page;
         pageTransitionTimer.restart();
     }
@@ -69,7 +67,6 @@ Item {
             currentPage = page;
             Qt.callLater(() => {
                 menuColumn.opacity = 1;
-                pageTransitioning = false;
             });
         }
     }
@@ -82,7 +79,7 @@ Item {
                 "bold": true
             }
         },
-        "separator", "favorites", "hide", "workspaces"]
+        "separator", "favorites", "categories", "hide", "workspaces"]
 
     readonly property var menuConfigAdvanced: (Config.launcher.contextMenuAdvanced && Config.launcher.contextMenuAdvanced.length > 0) ? Config.launcher.contextMenuAdvanced : ["terminal",
         {
@@ -165,9 +162,8 @@ Item {
     }
 
     function getSubmenuIndex(itemId) {
-        // Force dependency on submenuMapVersion to trigger updates
-        const version = submenuMapVersion;
-        return submenuMap[itemId] !== undefined ? submenuMap[itemId] : -1;
+        submenuMapVersion;
+        return submenuMap[itemId] ?? -1;
     }
 
     Component.onCompleted: buildSubmenuMap()
@@ -249,8 +245,6 @@ Item {
     }
 
     visible: false
-    signal closed
-
     property bool menuOpen: false
 
     function launchApp(workspace) {
@@ -259,28 +253,31 @@ Item {
         if (workspace)
             Services.Hypr.dispatch(`workspace ${workspace}`);
         Apps.launch(root.app);
-        if (root.visibilities)
-            root.visibilities.launcher = false;
+        root.visibilities.launcher = false;
         toggle();
     }
 
     function toggle() {
         if (!root.app)
-            return;
-        if (root.visible) {
-            menuOpen = false;
-        } else {
+        return;
+
+        menuOpen = !root.visible;
+        if (menuOpen) {
             activeSubmenuIndex = -1;
             submenuProgress = 0;
             root.visible = true;
-            menuOpen = true;
-            root.forceActiveFocus();
         }
     }
 
-    onActiveFocusChanged: {
-        if (!activeFocus && visible)
-            toggle();
+    HyprlandFocusGrab {
+        active: root.visible && root.windowRef !== null
+        windows: root.windowRef ? [root.windowRef] : []
+
+        onCleared: {
+            if (root.visible) {
+                toggle();
+            }
+        }
     }
 
     Behavior on submenuProgress {
@@ -302,7 +299,7 @@ Item {
         id: submenuCloseTimer
         interval: 150
         onTriggered: {
-            if (hoveredSubmenuIndex < 0 && targetSubmenuIndex < 0) {
+            if (hoveredSubmenuIndex < 0 && targetSubmenuIndex < 0 && !submenuHover.hovered) {
                 submenuProgress = 0;
                 Qt.callLater(() => {
                     if (submenuProgress === 0)
@@ -312,16 +309,8 @@ Item {
         }
     }
 
-    MouseArea {
-        anchors.fill: parent
-        hoverEnabled: true
-        onClicked: mouse => mouse.accepted = true
-    }
-
     Item {
         id: menuWrapper
-        x: 0
-        y: 0
         width: menuContainer.width
         height: menuContainer.height
 
@@ -349,13 +338,11 @@ Item {
                 root.app = null;
                 activeSubmenuIndex = -1;
                 submenuProgress = 0;
-                root.closed();
             }
         }
 
         Item {
             id: gooBounds
-            visible: true
 
             readonly property real menuLeft: menuContainer.x
             readonly property real menuTop: menuContainer.y
@@ -415,8 +402,6 @@ Item {
 
         Item {
             id: menuContainer
-            x: 0
-            y: 0
             width: menuColumn.implicitWidth + Appearance.padding.smaller * 2
             height: menuColumn.implicitHeight + Appearance.padding.smaller * 2
 
@@ -506,8 +491,8 @@ Item {
             z: -1
 
             readonly property bool isTransitioning: targetSubmenuIndex >= 0
+            readonly property bool shouldShowSubmenu: activeSubmenuIndex >= 0 && submenuProgress > 0
 
-            // Interpolated dimensions and position
             property real interpolatedWidth: targetWidth
             property real interpolatedHeight: targetHeight
             property real interpolatedTopY: isTransitioning ? previousTopY : submenuItemY - targetHeight / 2
@@ -561,13 +546,17 @@ Item {
                 }
             }
 
-            width: (activeSubmenuIndex >= 0 && submenuProgress > 0) ? interpolatedWidth * submenuProgress : 0
-            height: (activeSubmenuIndex >= 0 && submenuProgress > 0) ? interpolatedHeight * submenuProgress : 0
+            width: shouldShowSubmenu ? interpolatedWidth * submenuProgress : 0
+            height: shouldShowSubmenu ? interpolatedHeight * submenuProgress : 0
 
             x: menuContainer.width + slideOffsetX
             y: clampedY
             visible: width > 0 || height > 0
             clip: true
+
+            HoverHandler {
+                id: submenuHover
+            }
 
             ColumnLayout {
                 id: submenuColumn
@@ -606,13 +595,26 @@ Item {
                     }
                 }
 
+                Loader {
+                    id: categorySubmenuLoader
+                    active: displayedSubmenuIndex >= 0 && getSubmenuParentId(displayedSubmenuIndex) === "categories"
+                    visible: active
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: active ? implicitHeight : 0
+                    sourceComponent: ContextMenus.Submenus.CategorySubmenu {
+                        app: root.app
+                        Component.onCompleted: initializeState()
+                        Component.onDestruction: saveChanges()
+                    }
+                }
+
                 // Generic submenu for custom items
                 Repeater {
                     model: {
                         if (displayedSubmenuIndex < 0)
                             return [];
                         const parentId = getSubmenuParentId(displayedSubmenuIndex);
-                        if (parentId === "launch" || parentId === "workspaces")
+                        if (parentId === "launch" || parentId === "workspaces" || parentId === "categories")
                             return [];
                         return getSubmenuItemsForIndex(displayedSubmenuIndex);
                     }
@@ -629,11 +631,7 @@ Item {
                         submenuIndex: -1
                         isSubmenuItem: true
 
-                        onTriggered: {
-                            if (itemData?.onTriggered) {
-                                itemData.onTriggered();
-                            }
-                        }
+                        onTriggered: itemData?.onTriggered?.()
                     }
                 }
             }
