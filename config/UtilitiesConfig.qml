@@ -32,7 +32,14 @@ JsonObject {
 
     component Vpn: JsonObject {
         property bool enabled: true
-        property list<var> provider: ["protonvpn"]
+        property list<var> provider: [
+            {
+                displayName: "Proton VPN",
+                enabled: true,
+                interface: "proton0",
+                name: "proton"
+            }
+        ]
     }
 
     component NightLight: JsonObject {

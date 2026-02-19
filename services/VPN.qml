@@ -64,11 +64,11 @@ Singleton {
                 interface: "tailscale0",
                 displayName: "Tailscale"
             },
-            "protonvpn": {
+            "proton": {
                 connectCmd: ["protonvpn", "connect"],
                 disconnectCmd: ["protonvpn", "disconnect"],
                 interface: "proton0",
-                displayName: "ProtonVPN"
+                displayName: "Proton VPN"
             }
         };
 
