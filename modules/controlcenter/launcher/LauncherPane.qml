@@ -467,6 +467,7 @@ Item {
                     id: appsListLoader
                     Layout.fillWidth: true
                     Layout.fillHeight: true
+                    asynchronous: true
                     active: true
 
                     sourceComponent: StyledListView {
@@ -552,14 +553,32 @@ Item {
                                     fill: 1
                                     color: Colours.palette.m3primary
                                 }
-                            }
 
-                            Component {
-                                id: favouriteIcon
-                                MaterialIcon {
-                                    text: "favorite"
-                                    fill: 1
-                                    color: Colours.palette.m3primary
+                                Loader {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    readonly property bool isHidden: modelData ? Strings.testRegexList(Config.launcher.hiddenApps, modelData.id) : false
+                                    readonly property bool isFav: modelData ? Strings.testRegexList(Config.launcher.favouriteApps, modelData.id) : false
+                                    active: isHidden || isFav
+
+                                    sourceComponent: isHidden ? hiddenIcon : (isFav ? favouriteIcon : null)
+                                }
+
+                                Component {
+                                    id: hiddenIcon
+                                    MaterialIcon {
+                                        text: "visibility_off"
+                                        fill: 1
+                                        color: Colours.palette.m3primary
+                                    }
+                                }
+
+                                Component {
+                                    id: favouriteIcon
+                                    MaterialIcon {
+                                        text: "favorite"
+                                        fill: 1
+                                        color: Colours.palette.m3primary
+                                    }
                                 }
                             }
                         }

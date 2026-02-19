@@ -48,34 +48,11 @@ Singleton {
     property int refCount
 
     function cleanCpuName(name: string): string {
-        return name
-            .replace(/\s*w\/.*$/i, "")
-            .replace(/\(R\)/gi, "")
-            .replace(/\(TM\)/gi, "")
-            .replace(/CPU/gi, "")
-            .replace(/\d+th Gen /gi, "")
-            .replace(/\d+nd Gen /gi, "")
-            .replace(/\d+rd Gen /gi, "")
-            .replace(/\d+st Gen /gi, "")
-            .replace(/Core /gi, "")
-            .replace(/Processor/gi, "")
-            .replace(/\s+/g, " ")
-            .trim();
+        return name.replace(/\s*w\/.*$/i, "").replace(/\(R\)/gi, "").replace(/\(TM\)/gi, "").replace(/CPU/gi, "").replace(/\d+th Gen /gi, "").replace(/\d+nd Gen /gi, "").replace(/\d+rd Gen /gi, "").replace(/\d+st Gen /gi, "").replace(/Core /gi, "").replace(/Processor/gi, "").replace(/\s+/g, " ").trim();
     }
 
     function cleanGpuName(name: string): string {
-        return name
-            .replace(/[^\/\s]+\s*\/\s*([^\s\]]+)$/, "$1")
-            .replace(/NVIDIA GeForce /gi, "")
-            .replace(/NVIDIA /gi, "")
-            .replace(/AMD Radeon /gi, "")
-            .replace(/AMD /gi, "")
-            .replace(/Intel /gi, "")
-            .replace(/\(R\)/gi, "")
-            .replace(/\(TM\)/gi, "")
-            .replace(/Graphics/gi, "")
-            .replace(/\s+/g, " ")
-            .trim();
+        return name.replace(/[^\/\s]+\s*\/\s*([^\s\]]+)$/, "$1").replace(/NVIDIA GeForce /gi, "").replace(/NVIDIA /gi, "").replace(/AMD Radeon /gi, "").replace(/AMD /gi, "").replace(/Intel /gi, "").replace(/\(R\)/gi, "").replace(/\(TM\)/gi, "").replace(/Graphics/gi, "").replace(/\s+/g, " ").trim();
     }
 
     function formatKib(kib: real): var {
@@ -106,7 +83,7 @@ Singleton {
 
     Timer {
         running: root.refCount > 0
-        interval: Config.dashboard.updateInterval
+        interval: Config.dashboard.resourceUpdateInterval
         repeat: true
         triggeredOnStart: true
         onTriggered: {
@@ -268,7 +245,8 @@ Singleton {
 
                     // Convert bytes to KiB for consistency with formatKib
                     diskList.push({
-                        mount: disk.name,  // Using 'mount' property for compatibility
+                        mount: disk.name  // Using 'mount' property for compatibility
+                        ,
                         used: used / 1024,
                         total: total / 1024,
                         free: (total - used) / 1024,
@@ -290,18 +268,8 @@ Singleton {
 
         running: false
         command: ["sh", "-c",
-            "if [ \"$POWERPROFILE\" = \"performance\" ]; then " +
-                "if command -v nvidia-smi >/dev/null 2>&1 && nvidia-smi -L >/dev/null 2>&1; then " +
-                    "nvidia-smi --query-gpu=name --format=csv,noheader; " +
-                "else " +
-                    "lspci 2>/dev/null | grep -i 'vga\\|3d\\|display' | head -1; " +
-                "fi; " +
-            "else " +
-                "lspci 2>/dev/null | grep -i 'vga\\|3d\\|display' | grep -vi 'nvidia' | sed 's/^[^:]*: *[^:]*: *//' | head -1 || " +
-                "nvidia-smi --query-gpu=name --format=csv,noheader; " +
-            "fi"
-        ]
-        environment: ({ POWERPROFILE: root.powerProfile })
+            "if [\"$POWERPROFILE\" = \"performance\"]; then if command -v nvidia-smi >/dev/null 2>&1 && nvidia-smi -L >/dev/null 2>&1; then nvidia-smi --query-gpu=name --format=csv,noheader; else lspci 2>/dev/null | grep -i 'vga\\|3d\\|display' | head -1; fi; else lspci 2>/dev/null | grep -i 'vga\\|3d\\|display' | grep -vi 'nvidia' | sed 's/^[^:]*: *[^:]*: *//' | head -1 || nvidia-smi --query-gpu=name --format=csv,noheader; fi]
+        environment: ( { POWERPROFILE: root.powerProfile } )
         stdout: StdioCollector {
             onStreamFinished: {
                 const output = text.trim();

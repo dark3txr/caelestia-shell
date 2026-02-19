@@ -160,6 +160,7 @@ Singleton {
     function serializeBackground(): var {
         return {
             enabled: background.enabled,
+            wallpaperEnabled: background.wallpaperEnabled,
             desktopClock: {
                 enabled: background.desktopClock.enabled,
                 scale: background.desktopClock.scale,
@@ -364,6 +365,12 @@ Singleton {
             enabled: session.enabled,
             dragThreshold: session.dragThreshold,
             vimKeybinds: session.vimKeybinds,
+            icons: {
+                logout: session.icons.logout,
+                shutdown: session.icons.shutdown,
+                hibernate: session.icons.hibernate,
+                reboot: session.icons.reboot
+            },
             commands: {
                 suspend: session.commands.suspend,
                 logout: session.commands.logout,

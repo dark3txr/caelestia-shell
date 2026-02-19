@@ -3,17 +3,12 @@ import Quickshell.Io
 JsonObject {
     property bool enabled: true
     property bool showOnHover: false
-    property int updateInterval: 1000
+    property int mediaUpdateInterval: 500
+    property int resourceUpdateInterval: 1000
     property int dragThreshold: 50
     property bool showClockSeconds: true
-    property Sizes sizes
-    property Performance performance
-
-    sizes: Sizes {
-    }
-
-    performance: Performance {
-    }
+    property Sizes sizes: Sizes {}
+    property Performance: performance {}
 
     component Performance: JsonObject {
         property bool showBattery: true
