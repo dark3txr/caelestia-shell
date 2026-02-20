@@ -56,6 +56,7 @@ JsonObject {
         property bool workspaces: true
         property bool volume: false
         property bool brightness: false
+        property bool invertScrollDirection: false
     }
 
     component Popouts: JsonObject {
