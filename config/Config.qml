@@ -449,7 +449,6 @@ Singleton {
         return {
             weatherLocation: services.weatherLocation,
             useFahrenheit: services.useFahrenheit,
-            useFahrenheitPerformance: services.useFahrenheitPerformance,
             useTwelveHourClock: services.useTwelveHourClock,
             gpuType: services.gpuType,
             visualiserBars: services.visualiserBars,
