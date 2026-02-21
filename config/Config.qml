@@ -237,6 +237,8 @@ Singleton {
                 showLockStatus: bar.status.showLockStatus
             },
             clock: {
+                background: bar.clock.background,
+                showDate: bar.clock.showDate,
                 showIcon: bar.clock.showIcon,
                 showSeconds: bar.clock.showSeconds
             },
