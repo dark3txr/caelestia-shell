@@ -56,4 +56,39 @@ JsonObject {
         property int defaultReminderMinutes: 15
         property list<var> quickReminderOptions: [5, 15, 30, 60, 1440]
     }
+
+    property list<var> quickToggles: [
+        {
+            id: "wifi",
+            enabled: true
+        },
+        {
+            id: "bluetooth",
+            enabled: true
+        },
+        {
+            id: "mic",
+            enabled: true
+        },
+        {
+            id: "settings",
+            enabled: true
+        },
+        {
+            id: "gameMode",
+            enabled: false
+        },
+        {
+            id: "dnd",
+            enabled: true
+        },
+        {
+            id: "vpn",
+            enabled: true
+        },
+        {
+            id: "nightLight",
+            enabled: true
+        }
+    ]
 }

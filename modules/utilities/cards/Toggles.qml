@@ -13,7 +13,30 @@ StyledRect {
 
     required property var visibilities
     required property Item popouts
-    property bool additionalToggles: !VPN.enabled && !NightLight.enabled
+
+    readonly property var quickToggles: {
+        const seenIds = new Set();
+
+        return Config.utilities.quickToggles.filter(item => {
+            if (!item.enabled)
+                return false;
+
+            if (seenIds.has(item.id)) {
+                return false;
+            }
+
+            if (item.id === "vpn") {
+                return Config.utilities.vpn.provider.some(p => 
+                    typeof p === "object" ? (p.enabled === true) : false
+                );
+            }
+
+            seenIds.add(item.id);
+            return true;
+        });
+    }
+    readonly property int splitIndex: Math.ceil(quickToggles.length / 2)
+    readonly property bool needExtraRow: quickToggles.length > 6
 
     Layout.fillWidth: true
     implicitHeight: layout.implicitHeight + Appearance.padding.large * 2
@@ -33,98 +56,115 @@ StyledRect {
             font.pointSize: Appearance.font.size.normal
         }
 
-        RowLayout {
-            Layout.alignment: Qt.AlignHCenter
-            spacing: Appearance.spacing.small
-
-            Toggle {
-                icon: "wifi"
-                checked: Network.wifiEnabled
-                onClicked: Network.toggleWifi()
-            }
-
-            Toggle {
-                icon: "bluetooth"
-                checked: Bluetooth.defaultAdapter?.enabled ?? false
-                onClicked: {
-                    const adapter = Bluetooth.defaultAdapter;
-                    if (adapter)
-                        adapter.enabled = !adapter.enabled;
-                }
-            }
-
-            Toggle {
-                icon: "mic"
-                checked: !Audio.sourceMuted
-                onClicked: {
-                    const audio = Audio.source?.audio;
-                    if (audio)
-                        audio.muted = !audio.muted;
-                }
-            }
-
-            Toggle {
-                icon: "settings"
-                inactiveOnColour: Colours.palette.m3onSurfaceVariant
-                toggle: false
-                onClicked: {
-                    root.visibilities.utilities = false;
-                    root.popouts.detach("network");
-                }
-            }
-
-            Toggle {
-                icon: "gamepad"
-                checked: GameMode.enabled
-                visible: root.additionalToggles
-                onClicked: GameMode.enabled = !GameMode.enabled
-            }
-
-            Toggle {
-                icon: "notifications_off"
-                checked: Notifs.dnd
-                visible: root.additionalToggles
-                onClicked: Notifs.dnd = !Notifs.dnd
-            }
+        ToggleRow {
+            rowModel: root.needExtraRow ? root.quickToggles.slice(0, root.splitIndex) : root.quickToggles
         }
 
-        RowLayout {
-            Layout.alignment: Qt.AlignHCenter
-            spacing: Appearance.spacing.small
-            visible: VPN.enabled || NightLight.enabled
+        ToggleRow {
+            visible: root.needExtraRow
+            rowModel: root.needExtraRow ? root.quickToggles.slice(root.splitIndex) : []
+        }
+    }
 
-            Toggle {
-                icon: "gamepad"
-                checked: GameMode.enabled
-                onClicked: GameMode.enabled = !GameMode.enabled
-            }
+    component ToggleRow: RowLayout {
+        property var rowModel: []
 
-            Toggle {
-                icon: "notifications_off"
-                checked: Notifs.dnd
-                onClicked: Notifs.dnd = !Notifs.dnd
-            }
+        Layout.fillWidth: true
+        spacing: Appearance.spacing.small
 
-            Toggle {
-                icon: "vpn_key"
-                checked: VPN.connected
-                enabled: !VPN.connecting
-                visible: Config.utilities.vpn.provider.some(p => typeof p === "object" ? (p.enabled === true) : false)
-                onClicked: VPN.toggle()
-            }
+        Repeater {
+            model: parent.rowModel
 
-            Toggle {
-                icon: "dark_mode"
-                checked: NightLight.on
-                visible: NightLight.enabled
-                onClicked: NightLight.toggle()
+            delegate: DelegateChooser {
+                role: "id"
+
+                DelegateChoice {
+                    roleValue: "wifi"
+                    delegate: Toggle {
+                        icon: "wifi"
+                        checked: Network.wifiEnabled
+                        onClicked: Network.toggleWifi()
+                    }
+                }
+                DelegateChoice {
+                    roleValue: "bluetooth"
+                    delegate: Toggle {
+                        icon: "bluetooth"
+                        checked: Bluetooth.defaultAdapter?.enabled ?? false
+                        onClicked: {
+                            const adapter = Bluetooth.defaultAdapter;
+                            if (adapter)
+                                adapter.enabled = !adapter.enabled;
+                        }
+                    }
+                }
+                DelegateChoice {
+                    roleValue: "mic"
+                    delegate: Toggle {
+                        icon: "mic"
+                        checked: !Audio.sourceMuted
+                        onClicked: {
+                            const audio = Audio.source?.audio;
+                            if (audio)
+                                audio.muted = !audio.muted;
+                        }
+                    }
+                }
+                DelegateChoice {
+                    roleValue: "settings"
+                    delegate: Toggle {
+                        icon: "settings"
+                        inactiveOnColour: Colours.palette.m3onSurfaceVariant
+                        toggle: false
+                        onClicked: {
+                            root.visibilities.utilities = false;
+                            root.popouts.detach("network");
+                        }
+                    }
+                }
+                DelegateChoice {
+                    roleValue: "gameMode"
+                    delegate: Toggle {
+                        icon: "gamepad"
+                        checked: GameMode.enabled
+                        onClicked: GameMode.enabled = !GameMode.enabled
+                    }
+                }
+
+                DelegateChoice {
+                    roleValue: "dnd"
+                    delegate: Toggle {
+                        icon: "notifications_off"
+                        checked: Notifs.dnd
+                        onClicked: Notifs.dnd = !Notifs.dnd
+                    }
+                }
+                DelegateChoice {
+                    roleValue: "vpn"
+                    delegate: Toggle {
+                        icon: "vpn_key"
+                        checked: VPN.connected
+                        enabled: !VPN.connecting
+                        onClicked: VPN.toggle()
+                    }
+                }
+
+                DelegateChoice {
+                    roleValue: "nightLight"
+                    delegate: Toggle {
+                        icon: "dark_mode"
+                        checked: NightLight.on
+                        visible: NightLight.enabled
+                        onClicked: NightLight.toggle()
+                    }
+                }
             }
         }
     }
 
     component Toggle: IconButton {
         Layout.fillWidth: true
-        Layout.preferredWidth: implicitWidth + (stateLayer.pressed ? Appearance.padding.large : 0)
+        Layout.preferredWidth: implicitWidth + (stateLayer.pressed ? Appearance.padding.large : internalChecked ? Appearance.padding.smaller : 0)
         radius: stateLayer.pressed ? Appearance.rounding.small / 2 : internalChecked ? Appearance.rounding.small : Appearance.rounding.normal
         inactiveColour: Colours.layer(Colours.palette.m3surfaceContainerHighest, 2)
         toggle: true
