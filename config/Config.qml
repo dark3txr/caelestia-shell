@@ -372,7 +372,7 @@ Singleton {
             dragThreshold: session.dragThreshold,
             vimKeybinds: session.vimKeybinds,
             icons: {
-                suspend: sessions.icons.suspend,
+                suspend: session.icons.suspend,
                 logout: session.icons.logout,
                 hibernate: session.icons.hibernate,
                 reboot: session.icons.reboot,
