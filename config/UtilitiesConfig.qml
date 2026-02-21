@@ -83,6 +83,10 @@ JsonObject {
             enabled: true
         },
         {
+            id: "caffeine",
+            enabled: true
+        },
+        {
             id: "vpn",
             enabled: true
         },

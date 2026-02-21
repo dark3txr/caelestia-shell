@@ -19,8 +19,6 @@ Item {
         anchors.fill: parent
         spacing: Appearance.spacing.normal
 
-    UtilCards.IdleInhibit {}
-
         // Combined media card: Screenshots + Recordings in tabs
         UtilCards.Media {
             props: root.props
