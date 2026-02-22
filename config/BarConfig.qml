@@ -81,7 +81,6 @@ JsonObject {
     }
 
     component ActiveWindow: JsonObject {
-        property bool compact: false
         property bool inverted: false
     }
 

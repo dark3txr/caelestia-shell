@@ -217,7 +217,6 @@ Singleton {
                 specialWorkspaceIcons: bar.workspaces.specialWorkspaceIcons
             },
             activeWindow: {
-                compact: bar.activeWindow.compact,
                 inverted: bar.activeWindow.inverted
             },
             tray: {
