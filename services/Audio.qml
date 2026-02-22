@@ -14,6 +14,11 @@ Singleton {
     property string previousSourceName: ""
 
     readonly property var nodes: Pipewire.nodes.values.reduce((acc, node) => {
+        // Exclude caelestia-shell
+        if (getStreamName(node) === "caelestia-shell") {
+            return acc;
+        }
+
         if (!node.isStream) {
             if (node.isSink)
                 acc.sinks.push(node);
