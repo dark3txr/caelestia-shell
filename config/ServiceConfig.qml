@@ -23,7 +23,7 @@ JsonObject {
     
     component SunsetService: JsonObject {
         property bool manualEnabled: false
-        property int temperature: 3000
+        property int temperature: 4500
         property string preferredBackend: ""
     }
 }
