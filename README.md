@@ -603,7 +603,7 @@ default, you must create it manually.
         "visualiserBars": 45,
         "sunsetService": {
             "manualEnabled": false,
-            "temperature": 3000,
+            "temperature": 4500,
             "preferredBackend": ""
         }
     },

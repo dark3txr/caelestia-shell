@@ -32,7 +32,7 @@ StyledRect {
                 color: Sunset.active ? Colours.palette.m3primary : Colours.palette.m3secondaryContainer
                 MaterialIcon {
                     anchors.centerIn: parent
-                    text: Sunset.active ? "wb_sunny" : "partly_cloudy_night"
+                    text: Sunset.active ? "moon_stars" : "partly_cloudy_night"
                     color: Sunset.active ? Colours.palette.m3onPrimary : Colours.palette.m3onSecondaryContainer
                 }
             }
@@ -53,6 +53,7 @@ StyledRect {
                 onToggled: Sunset.enabled = checked
             }
         }
+        //Slider for temp.
         ColumnLayout {
             id: extraControls
             Layout.fillWidth: true

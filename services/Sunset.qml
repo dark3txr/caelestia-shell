@@ -9,7 +9,7 @@ Singleton {
     id: root
 
     property bool enabled: Config.services.sunsetService?.manualEnabled ?? false
-    property int temperature: Config.services.sunsetService?.temperature ?? 3000
+    property int temperature: Config.services.sunsetService?.temperature ?? 4500
 
     readonly property bool active: enabled
 
@@ -90,7 +90,7 @@ Singleton {
     }
 
     onTemperatureChanged: {
-        if (Config.services.sunsetService && temperature !== (Config.services.sunsetService.temperature ?? 3000)) {
+        if (Config.services.sunsetService && temperature !== (Config.services.sunsetService.temperature ?? 4500)) {
             Config.services.sunsetService.temperature = temperature;
         }
 
