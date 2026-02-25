@@ -7,7 +7,6 @@ JsonObject {
     property Sizes sizes: Sizes {}
     property Toasts toasts: Toasts {}
     property Vpn vpn: Vpn {}
-    property NightLight nightLight: NightLight {}
     property Calendar calendar: Calendar {}
 
     component Sizes: JsonObject {
@@ -28,7 +27,6 @@ JsonObject {
         property bool kbLimit: true
         property bool vpnChanged: true
         property bool nowPlaying: true
-        property bool nightLight: true
     }
 
     component Vpn: JsonObject {
@@ -41,11 +39,6 @@ JsonObject {
                 name: "proton"
             }
         ]
-    }
-
-    component NightLight: JsonObject {
-        property bool enabled: true
-        property int temperature: 4500
     }
 
     component Calendar: JsonObject {
@@ -76,7 +69,7 @@ JsonObject {
         },
         {
             id: "gameMode",
-            enabled: false
+            enabled: true
         },
         {
             id: "dnd",
@@ -88,10 +81,6 @@ JsonObject {
         },
         {
             id: "vpn",
-            enabled: true
-        },
-        {
-            id: "nightLight",
             enabled: true
         }
     ]

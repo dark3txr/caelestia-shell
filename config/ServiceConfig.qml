@@ -18,4 +18,11 @@ JsonObject {
             "to": "YT Music"
         }
     ]
+    property SunsetService sunsetService: SunsetService {}
+    
+    component SunsetService: JsonObject {
+        property bool manualEnabled: false
+        property int temperature: 4500
+        property string preferredBackend: ""
+    }
 }

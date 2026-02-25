@@ -156,16 +156,6 @@ StyledRect {
                         onClicked: VPN.toggle()
                     }
                 }
-
-                DelegateChoice {
-                    roleValue: "nightLight"
-                    delegate: Toggle {
-                        icon: "dark_mode"
-                        checked: NightLight.on
-                        visible: NightLight.enabled
-                        onClicked: NightLight.toggle()
-                    }
-                }
             }
         }
     }

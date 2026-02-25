@@ -1,4 +1,4 @@
-import "cards" as UtilCards
+import "cards"
 import qs.config
 import QtQuick
 import QtQuick.Layouts
@@ -19,14 +19,16 @@ Item {
         anchors.fill: parent
         spacing: Appearance.spacing.normal
 
+        BlueLightFilter {}
+
         // Combined media card: Screenshots + Recordings in tabs
-        UtilCards.Media {
+        Media {
             props: root.props
             visibilities: root.visibilities
             z: 1
         }
 
-        UtilCards.Toggles {
+        Toggles {
             visibilities: root.visibilities
             popouts: root.popouts
         }
