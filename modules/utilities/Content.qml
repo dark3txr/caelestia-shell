@@ -19,7 +19,7 @@ Item {
         anchors.fill: parent
         spacing: Appearance.spacing.normal
 
-        HyprSunset {}
+        BlueLightFilter {}
 
         IdleInhibit {}
 
