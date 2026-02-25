@@ -19,6 +19,7 @@ Item {
         // Length - 2 cause repeater counts as a child
         return bar.height - otherHeight - bar.spacing * (bar.children.length - 1) - bar.vPadding * 2;
     }
+
     property Title current: text1
 
     clip: true
