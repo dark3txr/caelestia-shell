@@ -7,6 +7,7 @@ import "modules/drawers"
 import "modules/background"
 import "modules/areapicker"
 import "modules/lock"
+import "services"
 import Quickshell
 
 ShellRoot {
@@ -21,5 +22,12 @@ ShellRoot {
     BatteryMonitor {}
     IdleMonitors {
         lock: lock
+    }
+
+    UsbService {
+    id: usbService
+    }
+    UsbToast {
+        usbService: usbService
     }
 }
