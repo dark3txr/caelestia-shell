@@ -17,11 +17,8 @@ Singleton {
             "animations:enabled": 0,
             "decoration:shadow:enabled": 0,
             "decoration:blur:enabled": 0,
-            "general:gaps_in": 0,
-            "general:gaps_out": 0,
-            "general:border_size": 1,
-            "decoration:rounding": 0,
-            "general:allow_tearing": 1
+            "general:allow_tearing": 1,
+            "input:accel_profile": "flat"
         });
     }
 
@@ -29,7 +26,7 @@ Singleton {
         if (enabled) {
             setDynamicConfs();
             if (Config.utilities.toasts.gameModeChanged)
-                Toaster.toast(qsTr("Game mode enabled"), qsTr("Disabled Hyprland animations, blur, gaps and shadows"), "gamepad");
+                Toaster.toast(qsTr("Game mode enabled"), qsTr("Disabled Hyprland animations, blur, shadows and mouse acceleration"), "gamepad");
         } else {
             Hypr.extras.message("reload");
             if (Config.utilities.toasts.gameModeChanged)
