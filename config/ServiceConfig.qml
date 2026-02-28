@@ -25,4 +25,5 @@ JsonObject {
         property int temperature: 4500
         property string preferredBackend: ""
     }
+    property bool showLyrics: true
 }

@@ -465,6 +465,7 @@ Singleton {
             smartScheme: services.smartScheme,
             defaultPlayer: services.defaultPlayer,
             playerAliases: services.playerAliases,
+            showLyrics: services.showLyrics,
             sunsetService: {
                 manualEnabled: services.sunsetService.manualEnabled,
                 temperature: services.sunsetService.temperature,
@@ -476,6 +477,8 @@ Singleton {
     function serializePaths(): var {
         return {
             wallpaperDir: paths.wallpaperDir,
+            lyricsDir: paths.lyricsDir,
+            sessionGif: paths.sessionGif,
             mediaGif: paths.mediaGif
         };
     }
