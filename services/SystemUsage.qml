@@ -3,13 +3,15 @@ pragma Singleton
 import qs.config
 import Quickshell
 import Quickshell.Io
+import Quickshell.Services.UPower
 import QtQuick
 
 Singleton {
     id: root
 
     // Power Profile properties
-    property string powerProfile: ""
+    property int powerProfile: PowerProfiles.profile
+    property int lastPowerProfile: -1
 
     // CPU properties
     property string cpuName: ""
@@ -92,17 +94,16 @@ Singleton {
             storage.running = true;
             gpuUsage.running = true;
             sensors.running = true;
-        }
-    }
 
-    Timer {
-        running: root.refCount > 0
-        repeat: true
-        interval: Config.dashboard.resourceUpdateInterval * 10
-        triggeredOnStart: true
+            root.powerProfile = PowerProfiles.profile;
 
-        onTriggered: {
-            powerProfileProcess.running = true
+            if (root.lastPowerProfile !== root.powerProfile) {
+                if (root.lastPowerProfile === -1 || ((root.lastPowerProfile === PowerProfile.Performance) !== (root.powerProfile === PowerProfile.Performance))) {
+                    gpuNameDetect.running = true;
+                    gpuTypeCheck.running = true;
+                }
+                root.lastPowerProfile = root.powerProfile;
+            }
         }
     }
 
@@ -147,27 +148,6 @@ Singleton {
             const data = text();
             root.memTotal = parseInt(data.match(/MemTotal: *(\d+)/)[1], 10) || 1;
             root.memUsed = (root.memTotal - parseInt(data.match(/MemAvailable: *(\d+)/)[1], 10)) || 0;
-        }
-    }
-
-    Process {
-        id: powerProfileProcess
-        command: ["powerprofilesctl", "get"]
-        running: false
-        stdout: StdioCollector {
-            onStreamFinished: {
-                const profile = text.trim();
-                const isPerformance = (profile === "performance");
-
-                const oldPowerProfile = root.powerProfile;
-                root.powerProfile = profile;
-
-                const crossedBoundary = (oldPowerProfile !== profile);
-                if (oldPowerProfile === "" || crossedBoundary) {
-                    gpuNameDetect.running = true;
-                    gpuTypeCheck.running = true;
-                }
-            }
         }
     }
 
@@ -268,7 +248,7 @@ Singleton {
 
         running: false
         command: {
-            if (root.powerProfile === "performance") {
+            if (root.powerProfile === PowerProfile.Performance) {
                 return ["sh", "-c", "if command -v nvidia-smi >/dev/null 2>&1 && nvidia-smi -L >/dev/null 2>&1; then nvidia-smi --query-gpu=name --format=csv,noheader; else lspci 2>/dev/null | grep -i 'vga\\|3d\\|display' | head -1; fi;"];
             } else {
                 return ["sh", "-c", "lspci 2>/dev/null | grep -i 'vga\\|3d\\|display' | grep -vi 'nvidia' | sed 's/^[^:]*: *[^:]*: *//' | head -1 || nvidia-smi --query-gpu=name --format=csv,noheader;"]
@@ -303,7 +283,7 @@ Singleton {
         id: gpuTypeCheck
         running: !Config.services.gpuType 
         command: {
-            if (root.powerProfile === "performance") {
+            if (root.powerProfile === PowerProfile.Performance) {
                 return ["sh", "-c", "if command -v nvidia-smi >/dev/null 2>&1 && nvidia-smi -L >/dev/null 2>&1; then echo NVIDIA; elif ls /sys/class/drm/card*/device/gpu_busy_percent 2>/dev/null | grep -q .; then echo GENERIC; else echo NONE; fi;"]
             } else {
                 return ["sh", "-c", "if ls /sys/class/drm/card*/device/gpu_busy_percent 2>/dev/null | grep -q .; then echo GENERIC; elif command -v nvidia-smi >/dev/null 2>&1; then echo NVIDIA; else echo NONE; fi;"]
