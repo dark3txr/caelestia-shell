@@ -19,7 +19,7 @@ Item {
 
     required property PersistentProperties visibilities
     readonly property bool needsKeyboard: root.lyricMenuOpen
-    
+
     readonly property real detailsHeightWithoutLyrics: details.implicitHeight - lyricsViewInDetails.implicitHeight
 
     property bool lyricMenuOpen: false

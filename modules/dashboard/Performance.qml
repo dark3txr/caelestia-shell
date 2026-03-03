@@ -89,7 +89,7 @@ Item {
                     mainValue: `${Math.round(SystemUsage.cpuPerc * 100)}%`
                     mainLabel: qsTr("Usage")
                     secondaryValue: root.displayTemp(SystemUsage.cpuTemp)
-                    secondaryLabel: qsTr("Temp")
+                    secondaryLabel: qsTr("Temperature")
                     usage: SystemUsage.cpuPerc
                     temperature: SystemUsage.cpuTemp
                     accentColor: Colours.palette.m3primary
@@ -105,7 +105,7 @@ Item {
                     mainValue: `${Math.round(SystemUsage.gpuPerc * 100)}%`
                     mainLabel: qsTr("Usage")
                     secondaryValue: root.displayTemp(SystemUsage.gpuTemp)
-                    secondaryLabel: qsTr("Temp")
+                    secondaryLabel: qsTr("Temperature")
                     usage: SystemUsage.gpuPerc
                     temperature: SystemUsage.gpuTemp
                     accentColor: Colours.palette.m3secondary
