@@ -267,6 +267,7 @@ Singleton {
             updateInterval: dashboard.updateInterval,
             dragThreshold: dashboard.dragThreshold,
             showClockSeconds: dashboard.showClockSeconds,
+            workspacesAppIcons: dashboard.workspacesAppIcons,
             performance: {
                 showBattery: dashboard.performance.showBattery,
                 showGpu: dashboard.performance.showGpu,
@@ -288,7 +289,11 @@ Singleton {
                 weatherWidth: dashboard.sizes.weatherWidth,
                 mediaCoverArtSize: dashboard.sizes.mediaCoverArtSize,
                 mediaVisualiserSize: dashboard.sizes.mediaVisualiserSize,
-                resourceSize: dashboard.sizes.resourceSize
+                resourceSize: dashboard.sizes.resourceSize,
+                workspacesCellWidth: dashboard.sizes.workspacesCellWidth,
+                workspacesCellHeight: dashboard.sizes.workspacesCellHeight,
+                workspacesCellRows: dashboard.sizes.workspacesCellRows,
+                workspacesCellColumns: dashboard.sizes.workspacesCellColumns 
             }
         };
     }

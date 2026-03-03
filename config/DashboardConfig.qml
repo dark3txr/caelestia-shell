@@ -7,6 +7,7 @@ JsonObject {
     property int resourceUpdateInterval: 1000
     property int dragThreshold: 50
     property bool showClockSeconds: true
+    property bool workspacesAppIcons: false
     property Sizes sizes: Sizes {}
     property Performance performance: Performance {}
 
@@ -33,5 +34,9 @@ JsonObject {
         readonly property int mediaCoverArtSize: 150
         readonly property int mediaVisualiserSize: 80
         readonly property int resourceSize: 200
+        readonly property int workspacesCellWidth: 300
+        readonly property int workspacesCellHeight: 190
+        readonly property int workspacesCellRows: 2
+        readonly property int workspacesCellColumns: 3
     }
 }
