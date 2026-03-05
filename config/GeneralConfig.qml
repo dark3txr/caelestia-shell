@@ -6,6 +6,103 @@ JsonObject {
     property Idle idle: Idle {}
     property Battery battery: Battery {}
 
+
+    component PowerActionSchema: JsonObject {
+        property string setPowerProfile: ""
+        property string setRefreshRate: ""
+        property string disableAnimations: ""
+        property string disableBlur: ""
+        property string disableRounding: ""
+        property string disableShadows: ""
+    }
+
+    component ChargingBehavior: PowerActionSchema {
+        property string setPowerProfile: "restore"
+        property string setRefreshRate: "restore"
+        property string disableAnimations: ""
+        property string disableBlur: ""
+        property string disableRounding: ""
+        property string disableShadows: ""
+    }
+
+    component UnpluggedBehavior: PowerActionSchema {
+        property string setPowerProfile: "restore"
+        property string setRefreshRate: "restore"
+        property string disableAnimations: ""
+        property string disableBlur: ""
+        property string disableRounding: ""
+        property string disableShadows: ""
+        property bool evaluateThresholds: true
+    }
+
+    component ProfileBehavior: PowerActionSchema {
+    }
+
+    component ProfileBehaviors: JsonObject {
+        property ProfileBehavior powerSaver: ProfileBehavior {
+            setPowerProfile: ""
+            setRefreshRate: "auto"
+            disableAnimations: "enable"
+            disableBlur: "disable"
+            disableRounding: "enable"
+            disableShadows: "disable"
+        }
+
+        property ProfileBehavior balanced: ProfileBehavior {
+            setPowerProfile: ""
+            setRefreshRate: "120"
+            disableAnimations: "enable"
+            disableBlur: "enable"
+            disableRounding: "enable"
+            disableShadows: "enable"
+        }
+
+        property ProfileBehavior performance: ProfileBehavior {
+            setPowerProfile: ""
+            setRefreshRate: "120"
+            disableAnimations: "enable"
+            disableBlur: "enable"
+            disableRounding: "enable"
+            disableShadows: "enable"
+        }
+    }
+
+    component PowerManagement: JsonObject {
+        property bool enabled: true
+        property list<var> thresholds: [
+            {
+                disableAnimations: "",
+                disableBlur: "",
+                disableRounding: "",
+                disableShadows: "",
+                level: 50,
+                setPowerProfile: "power-saver",
+                setRefreshRate: ""
+            },
+            {
+                disableAnimations: "",
+                disableBlur: "disable",
+                disableRounding: "",
+                disableShadows: "disable",
+                level: 20,
+                setPowerProfile: "",
+                setRefreshRate: "auto"
+            },
+            {
+                disableAnimations: "disable",
+                disableBlur: "disable",
+                disableRounding: "",
+                disableShadows: "disable",
+                level: 10,
+                setPowerProfile: "",
+                setRefreshRate: "auto"
+            }
+        ]
+        property ChargingBehavior onCharging: ChargingBehavior {}
+        property UnpluggedBehavior onUnplugged: UnpluggedBehavior {}
+        property ProfileBehaviors profileBehaviors: ProfileBehaviors {}
+    }
+
     component Apps: JsonObject {
         property list<string> terminal: ["foot"]
         property list<string> audio: ["pavucontrol"]
@@ -57,5 +154,6 @@ JsonObject {
             },
         ]
         property int criticalLevel: 3
+        property PowerManagement powerManagement: PowerManagement {}
     }
 }
